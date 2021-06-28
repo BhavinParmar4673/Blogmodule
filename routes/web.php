@@ -16,17 +16,9 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/insert', function () {
-    return view('post.insert');
-});
-
-
-Route::get('admin/index', function () {
     return view('admin.frontend.index');
 });
+
 
 Auth::routes();
 

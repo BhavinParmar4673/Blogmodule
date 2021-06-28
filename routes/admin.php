@@ -36,11 +36,13 @@ Route::middleware(['admin.auth'])->group(function () {
     Route::get('tag/alltag', 'Tagcontroller@alltag')->name('alltag');
     Route::resource('tag', 'Tagcontroller');
 
-    Route::get('/index','Projectcontroller@display')->name('display');
+    Route::get('/project','Projectcontroller@display')->name('project');
+    Route::get('/projectfilter','Projectcontroller@filter')->name('filter');
     Route::get('projects/allproject', 'Projectcontroller@allproject')->name('allproject');
     Route::delete('projects/{project}/delete','Projectcontroller@imagedestroy')->name('imagedestroy');
     Route::resource('projects', 'Projectcontroller');
 
+    Route::get('/post','PostController@post')->name('post');
     Route::get('posts/showpost','PostController@showpost')->name('showpost');
     Route::get('posts/check_slug','PostController@checkslug')->name('checkslug');
     Route::get('/blogcategory', 'Postcontroller@blogcategory')->name('blogcategory');

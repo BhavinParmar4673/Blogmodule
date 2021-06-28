@@ -46,7 +46,7 @@ class PostController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',  
-            'content' => 'required|min:5|max:2000',
+            'content' => 'required|min:5|max:10000',
             'description' => 'required|min:5|max:200',
             'categorys' => 'required',
             'tags' => 'required',
@@ -109,7 +109,7 @@ class PostController extends Controller
 
             foreach ($records as $record) {
                 $id = $record->id;
-                $title =  '<a href="' . route('admin.posts.show', $record->slug) . '">' . $record->title . '</a>';
+                $title =  $record->title;
                 $post = Post::findorFail($id);
                 $categorylist = "";
                 foreach ($post->categorys as $category) {
@@ -152,13 +152,20 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  String  $slug
+     * @param  String $slug
      * 
      * @return \Illuminate\Http\Response
      */
     public function show($slug)
-    {
-        return view('admin.post.blog')->with('post',Post::where('slug',$slug)->first());
+    {   
+        $post = Post::where('slug',$slug)->first();
+        $categorys = Category::all();
+        $blogs = Post::latest()->take(4)->get();
+        return view('admin.frontend.singleblog',[
+            'post' => $post,
+            'categorys' => $categorys,
+            'blogs' => $blogs
+        ]);
     }
 
     /**
@@ -183,7 +190,7 @@ class PostController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'content' => 'required|min:5|max:2000',
+            'content' => 'required|min:5',
             'description' => 'required|min:5|max:200',
         ]);
 
@@ -249,6 +256,18 @@ class PostController extends Controller
         $slug = Str::slug($request->title, '-');
         return response()->json([
             'slug'=>$slug
+        ]);
+    }
+
+    public function post()
+    {   
+        $posts = Post::latest()->paginate(5);
+        $blogs = Post::latest()->take(4)->get();
+        $categorys = Category::all();
+        return view('admin.frontend.blog',[
+            'posts' => $posts,
+            'categorys' => $categorys,
+            'blogs' => $blogs
         ]);
     }
 

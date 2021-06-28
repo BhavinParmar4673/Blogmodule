@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller as Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\Tag;
 use App\Models\Project_image;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class Projectcontroller extends Controller
@@ -92,7 +95,6 @@ class Projectcontroller extends Controller
             ->skip($start)
             ->take($rowperpage)
             ->get();
-
         foreach ($records as $record) {
             $id = $record->id;
             $title = $record->title;
@@ -138,8 +140,11 @@ class Projectcontroller extends Controller
      */
     public function show($id)
     {
-        $projectimage = Project_image::where('project_id',$id)->get();
-        return view('admin.project.display',compact('projectimage'));
+        // $projectimage = Project_image::where('project_id',$id)->get();
+        // return view('admin.project.display',compact('projectimage'));
+
+        $project =  Project::findorFail($id);
+        return view('admin.frontend.singleproject',compact('project'));
     }
 
     /**
@@ -244,7 +249,51 @@ class Projectcontroller extends Controller
     }
 
     public function display(){
-        $projects = Project::latest()->limit(8)->get();
-        return view('admin.frontend.index',compact('projects'));
+        $projects = Project::all();
+        $tags = Tag::all();
+        return view('admin.frontend.project',[
+            'projects' => $projects,
+            'tags' => $tags
+        ]);
     }
+
+    public function filter(Request $request)
+    {
+        $tag_id = $request->id;
+        if($tag_id)
+        {
+             //filter project
+            $projects = Project::whereHas('tags', function($query) use($tag_id) {
+                $query->where('tags.id', $tag_id);
+            })->get();
+            
+            //filter project image
+                foreach($projects as $projet)
+                {
+                    $i = Project::with('project_images')->find($projet->id);
+                    foreach($i->project_images as $image){
+                        $images[]=  array(
+                            "id" =>$image->id,
+                            "image"=>$image->image_src
+                            );
+                    }
+                }
+    
+            $data_arr[] = array(
+                "projects" => $projects,
+                "images" => $images
+            );
+            $response =  response()->json($data_arr);
+        }else{
+            $response = response()->json(['data' => 'Resource not found'], 404);
+        }
+            return $response;
+
+       
+    }
+
+
+
+
+
 }

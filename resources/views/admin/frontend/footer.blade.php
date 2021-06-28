@@ -1,4 +1,4 @@
-<footer class="border-top">
+<footer class="border-top mt-5">
     <div class="container">
         <div class="row py-5 justify-content-center">
             <div class="footer_image">
@@ -52,7 +52,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="text-center text-muted fst-italic">Copyright &copy; 2021 All rights reserved I This Template is made with
+                <div class="text-center text-muted">Copyright &copy; 2021 All rights reserved I This Template is made with
                      <i class="fas fa-heart"></i> by <a href class="footer_link">Colorib</a></div>
             </div>
         </div>

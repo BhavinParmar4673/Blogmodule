@@ -13,7 +13,7 @@ class Tag extends Model
         'name',
     ];
 
-    public Function projects()
+    public Function project()
     {
         return $this->belongsToMany(Project::class);
     }

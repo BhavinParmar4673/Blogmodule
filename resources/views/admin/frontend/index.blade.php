@@ -2,7 +2,7 @@
 @section('title', 'Home Page')
 @section('content')
 
-    <section class="home_banner_area">
+    <section class="home_banner_area" id="home">
         <div class="banner_inner">
             <div class="container">
                 <div class="row align-items-center justify-content-between">
@@ -70,7 +70,6 @@
             </div>
         </div>
     </div> --}}
-
 
     <div class="container" id="about">
         <div class="main-div row">
@@ -153,7 +152,9 @@
                 <div class="col-md-12">
                     <div id="myCarousel" class="carousel slide" data-ride="carousel">
                         @php
-                            $testimonial = App\Models\Testimonial::where('visibility', 1)->latest()->get();
+                            $testimonial = App\Models\Testimonial::where('visibility', 1)
+                                ->latest()
+                                ->get();
                         @endphp
                         <!-- Carousel indicators -->
                         <ol class="carousel-indicators">
@@ -190,111 +191,108 @@
         <div class="container">
             <h5 class="text-muted pb-1">OUR PORTFOLIO</h5>
             <h1 class="heading-1 font-weight-bold">Check Our Recent<br> Client Work</h1>
-            <div class="row">
-                    @foreach($projects as $key=>$myproject)
-                        @if ($key>=0 && $key<2)
-                            <div class="col-lg-6 col-12 mb-4">
-                                <div class="portfolio-item">
-                                    <a class="portfolio-link">
-                                        <div class="thumbnail">
-                                            @foreach ($myproject->project_images as $image)
-                                                <img class="img-fluid" src="{{$image->image_src}}" alt="..." />
-                                            @endforeach
-                                        </div>
-                                        <div class="portfolio-hover">
-                                            <h2 class="work__title">{{$myproject->title}}</h2>
-                                            <p class="work__desc">{{$myproject->description}}</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($key>=2 && $key<5)
-                            <div class="col-lg-4 col-12 mb-4">
-                                <div class="portfolio-item">
-                                    <a class="portfolio-link">
-                                        <div class="thumbnail">
-                                            @foreach ($myproject->project_images as $image)
-                                                <img class="img-fluid" src="{{$image->image_src}}" alt="..." />
-                                            @endforeach
-                                        </div>
-                                        <div class="portfolio-hover">
-                                            <h2 class="work__title">{{$myproject->title}}</h2>
-                                            <p class="work__desc">{{$myproject->description}}</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($key>=5 && $key<8)
-                            <div class="col-lg-3 col-12 mb-4">
-                                <div class="portfolio-item">
-                                    <a class="portfolio-link">
-                                        <div class="thumbnail">
-                                            @foreach ($myproject->project_images as $image)
-                                                <img class="img-fluid" src="{{$image->image_src}}" alt="..." />
-                                            @endforeach
-                                        </div>
-                                        <div class="portfolio-hover">
-                                            <h2 class="work__title">{{$myproject->title}}</h2>
-                                            <p class="work__desc">{{$myproject->description}}</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach 
-                            <div class="col-lg-3 col-12 mb-4">
-                                <div class="portfolio-item">
-                                    <a class="portfolio-link button_link">
-                                        <div class="thumbnail">
-                                              <h2>View More<span class="float-right ti-arrow-right"></h2>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                   
-                    
-                   
+            @php
                 
-
-                   
-                   
-                 
-                    
+             $projects =  App\Models\Project::latest()->take(8)->get();
+            @endphp
+            <div class="row py-4">
+                @foreach ($projects as $key => $myproject)
+                    @if ($key >= 0 && $key < 2)
+                        <div class="col-lg-6 col-12 mb-4">
+                            <div class="portfolio-item">
+                                <a class="portfolio-link" href="{{route('admin.projects.show',$myproject->id)}}">
+                                    <div class="thumbnail">
+                                        @foreach ($myproject->project_images as $image)
+                                            <img class="img-fluid" src="{{ $image->image_src }}" alt="..." />
+                                        @endforeach
+                                    </div>
+                                    <div class="portfolio-hover">
+                                        <h2 class="work__title">{{ $myproject->title }}</h2>
+                                        <p class="work__desc">{{ $myproject->description }}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                    @if ($key >= 2 && $key < 5)
+                        <div class="col-lg-4 col-12 mb-4">
+                            <div class="portfolio-item">
+                                <a class="portfolio-link" href="{{route('admin.projects.show',$myproject->id)}}">
+                                    <div class="thumbnail">
+                                        @foreach ($myproject->project_images as $image)
+                                            <img class="img-fluid" src="{{ $image->image_src }}" alt="..." />
+                                        @endforeach
+                                    </div>
+                                    <div class="portfolio-hover">
+                                        <h2 class="work__title">{{ $myproject->title }}</h2>
+                                        <p class="work__desc">{{ $myproject->description }}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                    @if ($key >= 5 && $key < 8)
+                        <div class="col-lg-3 col-12 mb-4">
+                            <div class="portfolio-item">
+                                <a class="portfolio-link" href="{{route('admin.projects.show',$myproject->id)}}">
+                                    <div class="thumbnail">
+                                        @foreach ($myproject->project_images as $image)
+                                            <img class="img-fluid" src="{{ $image->image_src }}" alt="..." />
+                                        @endforeach
+                                    </div>
+                                    <div class="portfolio-hover">
+                                        <h2 class="work__title">{{ $myproject->title }}</h2>
+                                        <p class="work__desc">{{ $myproject->description }}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+                <div class="col-lg-3 col-12 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link button_link" href="{{route('admin.project')}}">
+                            <div class="thumbnail">
+                                <h2>View More<span class="float-right ti-arrow-right"></h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-
+    @php
+    $blogs = App\Models\Post::orderBy('created_at', 'desc')
+        ->take(3)
+        ->get();
+    @endphp
     <div class="blog mt-5" id="blog">
         <div class="container">
             <h5 class="text-muted pb-1">OUR BLOG</h5>
             <h1 class="heading-1 font-weight-bold">Latest Story From<br> Our Blog</h1>
-            <div class="row mt-5">
-                @php
-                    $blogs = App\Models\Post::orderBy('created_at', 'desc')->take(3)->get();
-                @endphp
+            <div class="row mt-4">
                 @foreach ($blogs as $blog)
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card">
-                            <img class="card-img-top img-fluid" src="{{ $blog->image_src }}" alt="Card image cap">
-                            <div class="card-body py-4">
+                    <div class="col-lg-4 col-md-6 py-2">
+                        <div class="card h-100">
+                            <img class="img-fluid" src="{{ $blog->image_src }}" alt="Card image cap">
+                            <div class="card-body">
                                 <div class="d-flex justify-content-between pb-2">
                                     <a href="#" class="blog_link"><span
-                                            class="ti-user pr-2"></span>{{ Auth::guard('admin')->user()->name }}</a>
+                                            class="ti-user pr-2"></span>{{ Auth::guard('admin')->check() ? Auth::guard('admin')->user()->name :'Admin'  }}</a>
                                     <a href="#" class="blog_link"><span
                                             class="ti-calendar pr-2"></span>{{ $blog->updated_at->toDateString() }}</a>
                                 </div>
                                 <a href="#" class="blog_link">
                                     <h5 class="card-title">{{ $blog->title }}</h5>
                                 </a>
-                                <p class="card-text">{{ strip_tags($blog->content) }}</p>
+                                <p class="card-text">{{($blog->description) }}</p>
                                 <a href="" class="blog_link_design">LEARN MORE</a>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                    @endforeach
+                
             </div>
         </div>
     </div>
@@ -305,34 +303,24 @@
                 <div class="col-md-12">
                     <div class="owl-carousel owl-theme">
                         <div class="item px-3">
-                            <div class="d-flex flex-column justify-content-center">
                                 <img class="img-fluid"
                                     src="{{ asset('Image/brands/xlogo1.png.pagespeed.ic.zYTo7zZjjz.png') }}" alt="">
-                            </div>
                         </div>
                         <div class="item px-3">
-                            <div class="d-flex  flex-column justify-content-center">
                                 <img class="img-fluid"
                                     src="{{ asset('Image/brands/xlogo2.png.pagespeed.ic.Z25wYds54V.png') }}" alt="">
-                            </div>
                         </div>
                         <div class="item px-3">
-                            <div class="d-flex flex-column justify-content-center">
                                 <img class="img-fluid"
                                     src="{{ asset('Image/brands/xlogo3.png.pagespeed.ic.B7WJK2eRsf.png') }}" alt="">
-                            </div>
                         </div>
                         <div class="item px-3">
-                            <div class="d-flex flex-column justify-content-center">
                                 <img class="img-fluid"
                                     src="{{ asset('Image/brands/xlogo4.png.pagespeed.ic.wyij8nrzlO.png') }}" alt="">
-                            </div>
                         </div>
                         <div class="item px-3">
-                            <div class="d-flex flex-column justify-content-center">
                                 <img class="img-fluid"
                                     src="{{ asset('Image/brands/xlogo5.png.pagespeed.ic.HC2c65JSLR.png') }}" alt="">
-                            </div>
                         </div>
                     </div>
                 </div>
