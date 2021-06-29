@@ -48,7 +48,7 @@ class Projectcontroller extends Controller
             'images.*' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tags' => 'required|min:1'
         ]);
-        
+
         $project =new Project();
         $project->title = $request->title;
         $project->description = $request->description;
@@ -103,7 +103,7 @@ class Projectcontroller extends Controller
             $action = '<a href="javascript:void(0);"   data-id=' . $record->id . ' data-url="' . route('admin.projects.edit', $record->id) . '" class="edit btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                       </a>
-                      <a href="javascript:void(0);" data-url="' . route('admin.projects.destroy', $record->id) . '" 
+                      <a href="javascript:void(0);" data-url="' . route('admin.projects.destroy', $record->id) . '"
                         data-id=' . $record->id . '  class="delete btn btn-danger btn-sm">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                       </a>';
@@ -169,7 +169,6 @@ class Projectcontroller extends Controller
         }else{
             $response =response()->json(['data' => 'Resource not found'], 404);
         }
-       
         return $response;
     }
 
@@ -188,7 +187,7 @@ class Projectcontroller extends Controller
         $project->title = $request->title;
         $project->description = $request->description;
         $project->save();
-        
+
          //one or more preoladed image remove : not all
         if (isset($datalist['preloaded']) && $datalist['preloaded'] !=1) {
             $preloaded = $datalist['preloaded'];
@@ -238,16 +237,7 @@ class Projectcontroller extends Controller
         $project->delete();
         return response()->json(['success' => 'Project deleted successfully.'],200);
     }
-
-
-    public function imagedestroy($imagedestroy)
-    {
-        $project_images =Project_image::find($imagedestroy);
-        $project_images->deleteimage();
-        $project_images->delete();
-        return redirect()->route('admin.projects.index');
-    }
-
+    
     public function display(){
         $projects = Project::all();
         $tags = Tag::all();
@@ -263,33 +253,39 @@ class Projectcontroller extends Controller
         if($tag_id)
         {
              //filter project
-            $projects = Project::whereHas('tags', function($query) use($tag_id) {
-                $query->where('tags.id', $tag_id);
-            })->get();
-            
-            //filter project image
-                foreach($projects as $projet)
-                {
-                    $i = Project::with('project_images')->find($projet->id);
-                    foreach($i->project_images as $image){
-                        $images[]=  array(
-                            "id" =>$image->id,
-                            "image"=>$image->image_src
-                            );
-                    }
-                }
-    
-            $data_arr[] = array(
-                "projects" => $projects,
-                "images" => $images
-            );
-            $response =  response()->json($data_arr);
+             if($tag_id == 'all'){
+                $projects = Project::all();
+             }else{
+                $projects = Project::whereHas('tags', function($query) use($tag_id) {
+                    $query->where('tags.id', $tag_id);
+                })->get();
+            }
+
+            $html = '';
+            foreach($projects as $key => $myproject){
+            $html .= '<div class="col-lg-6 col-sm-12 mb-4">
+                <div class="itembox all">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" href="'.route('admin.projects.show',$myproject->id).'">
+                            <div class="thumbnail">';
+                                foreach ($myproject->project_images as $image){
+                                    $html .= '<img class="img-fluid" src="'.$image->image_src.'" alt="..." />';
+                                }
+                            $html .= '</div>
+                            </a>
+                        </div>
+                        <div class="portfolio-details mt-4">
+                            <h2 class="work__title">'.$myproject->title.'</h2>
+                            <p class="text-muted">'.$myproject->description.'</p>
+                        </div>
+                    </div>
+                </div>';
+            }
+            $response =  response()->json(['html' => $html]);
         }else{
             $response = response()->json(['data' => 'Resource not found'], 404);
         }
-            return $response;
-
-       
+        return $response;
     }
 
 

@@ -36,25 +36,28 @@ Route::middleware(['admin.auth'])->group(function () {
     Route::get('tag/alltag', 'Tagcontroller@alltag')->name('alltag');
     Route::resource('tag', 'Tagcontroller');
 
+    //home page using
     Route::get('/project','Projectcontroller@display')->name('project');
-    Route::get('/projectfilter','Projectcontroller@filter')->name('filter');
-    Route::get('projects/allproject', 'Projectcontroller@allproject')->name('allproject');
-    Route::delete('projects/{project}/delete','Projectcontroller@imagedestroy')->name('imagedestroy');
-    Route::resource('projects', 'Projectcontroller');
-
     Route::get('/post','PostController@post')->name('post');
     Route::get('posts/showpost','PostController@showpost')->name('showpost');
+    Route::get('/contact','ContactController@contactForm')->name('contact');
+    Route::post('/contact','ContactController@storeContactForm')->name('contact.store');
+
+    Route::get('/projectfilter','Projectcontroller@filter')->name('filter');
+    Route::get('projects/allproject', 'Projectcontroller@allproject')->name('allproject');
+    Route::resource('projects', 'Projectcontroller');
+
+
     Route::get('posts/check_slug','PostController@checkslug')->name('checkslug');
     Route::get('/blogcategory', 'Postcontroller@blogcategory')->name('blogcategory');
     Route::get('/blogtag', 'Postcontroller@blogtag')->name('blogtag');
     Route::get('posts/allpost', 'Postcontroller@allpost')->name('allpost');
     Route::resource('posts', 'PostController');
-    
+
     Route::get('testimonials/datatable', 'TestimonialController@datatable')->name('datatable');
     Route::resource('testimonials', 'TestimonialController');
 
     Route::get('sliders/allslider', 'SliderController@allslider')->name('allslider');
     Route::resource('sliders', 'SliderController');
-
 
 });

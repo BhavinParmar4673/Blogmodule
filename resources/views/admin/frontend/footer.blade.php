@@ -1,4 +1,4 @@
-<footer class="border-top mt-5">
+<footer class="border-top">
     <div class="container">
         <div class="row py-5 justify-content-center">
             <div class="footer_image">
@@ -56,6 +56,6 @@
                      <i class="fas fa-heart"></i> by <a href class="footer_link">Colorib</a></div>
             </div>
         </div>
-        
-    </div>  
+
+    </div>
 </footer>

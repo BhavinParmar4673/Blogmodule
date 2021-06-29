@@ -192,7 +192,7 @@
             <h5 class="text-muted pb-1">OUR PORTFOLIO</h5>
             <h1 class="heading-1 font-weight-bold">Check Our Recent<br> Client Work</h1>
             @php
-                
+
              $projects =  App\Models\Project::latest()->take(8)->get();
             @endphp
             <div class="row py-4">
@@ -208,7 +208,7 @@
                                     </div>
                                     <div class="portfolio-hover">
                                         <h2 class="work__title">{{ $myproject->title }}</h2>
-                                        <p class="work__desc">{{ $myproject->description }}</p>
+                                        <p class="work__desc">{{  Str::limit($myproject->description, 35) }}</p>
                                     </div>
                                 </a>
                             </div>
@@ -225,7 +225,7 @@
                                     </div>
                                     <div class="portfolio-hover">
                                         <h2 class="work__title">{{ $myproject->title }}</h2>
-                                        <p class="work__desc">{{ $myproject->description }}</p>
+                                        <p class="work__desc">{{  Str::limit($myproject->description, 35) }}</p>
                                     </div>
                                 </a>
                             </div>
@@ -242,7 +242,7 @@
                                     </div>
                                     <div class="portfolio-hover">
                                         <h2 class="work__title">{{ $myproject->title }}</h2>
-                                        <p class="work__desc">{{ $myproject->description }}</p>
+                                        <p class="work__desc">{{  Str::limit($myproject->description, 35) }}</p>
                                     </div>
                                 </a>
                             </div>
@@ -292,7 +292,7 @@
                         </div>
                     </div>
                     @endforeach
-                
+
             </div>
         </div>
     </div>

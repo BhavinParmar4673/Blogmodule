@@ -422,7 +422,7 @@ footer .footer_link:hover {
     position: relative;
     overflow: hidden;
     width: 100%;
-    min-height: 450px;
+    z-index: 1;
     background: url('/Image/banner/xcommon-banner.png.pagespeed.ic.6oIu2tVgyg.webp') no-repeat right bottom;
     background-size: cover;
     z-index: 1;
@@ -531,9 +531,65 @@ a:hover {
     color: blue;
 }
 
-#itembox-dynamic {
-    margin-top: -185px;
+/* contact-us */
+
+.contact_area{
+    background: url('/Image/contact/crew-unsplash.jpg') no-repeat top center;
+    background-position: center;
+    background-size: cover;
+    min-height: 890px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
+
+.contact-inner{
+    position:absolute;
+    width: 100%;
+    min-height: 500px;
+    top: 90px;
+}
+.contact-title h2{
+    font-size: 50px;
+    font-weight: bold;
+}
+.contact-title span{
+    font-size: 50px;
+}
+
+
+.form-button{
+    display: inline-block;
+    background-color: orangered;
+    color: #fff;
+    letter-spacing: 0;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 50px;
+    padding: 0 50px;
+    outline: none!important;
+    text-align: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 5px;
+    border: 0px;
+    background-size: 200% auto;
+}
+
+.contact-logo .design{
+    width: 70px;
+    height: 70px;
+    background-color: #6c757d;
+}
+
+.contact-logo .design span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 0;
+}
+
 
 @media screen and (max-width: 720px) {
     .home_banner_area {
@@ -582,9 +638,6 @@ a:hover {
     .portfolio_filter ul {
         columns: 2 !important;
         display: block;
-    }
-    #itembox-dynamic {
-        margin-top: -310px;
     }
 }
 
@@ -642,8 +695,5 @@ a:hover {
     .portfolio_filter ul {
         columns: 2 !important;
         display: block;
-    }
-    #itembox-dynamic {
-        margin-top: -260px;
     }
 }

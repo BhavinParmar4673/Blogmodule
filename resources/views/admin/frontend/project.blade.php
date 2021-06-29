@@ -7,14 +7,13 @@
         <h5 class="text-muted pb-2">OUR PORTFOLIO</h5>
         <h1 class="heading-1 font-weight-bold">Check Our Recent<br> Client Work</h1>
         <ul class="pt-5">
-            <li class="list active" data-filter="all">All</li>
+            <li class="list active" data-filter="all" data-id="all">All</li>
             @foreach ($tags as $tag)
                  <li class="list" data-filter="{{$tag->name}}" data-id="{{$tag->id}}">{{$tag->name}}</li>
             @endforeach
-
-            <a href="javascript:void(0)" id="filter" data-url="{{ route('admin.filter') }}"></a>
+                <a href="javascript:void(0)" id="filter" data-url="{{ route('admin.filter') }}"></a>
         </ul>
-        <div class="row my-5">
+        <div class="row mt-5" id="itembox-dynamic-new">
             @foreach ($projects as $key => $myproject)
                     <div class="col-lg-6 col-sm-12 mb-4">
                       <div class="itembox all">
@@ -34,8 +33,6 @@
                       </div>
                     </div>
             @endforeach
-        </div>
-        <div class="row" id="itembox-dynamic">
         </div>
     </div>
 </div>

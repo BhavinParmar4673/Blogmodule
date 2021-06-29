@@ -15,7 +15,7 @@
                         class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="{{ route('admin.posts.index') }}" class="nav-link">Home</a>
+                <a href="{{ route('admin.home') }}" class="nav-link">Home</a>
             </li>
         </ul>
 
@@ -32,7 +32,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.login') }}">{{ __('Login') }}</a>
                     </li>
-              
+
 
                 @if (Route::has('admin.register'))
                     <li class="nav-item">
