@@ -187,7 +187,6 @@ class Projectcontroller extends Controller
         $project->title = $request->title;
         $project->description = $request->description;
         $project->save();
-
          //one or more preoladed image remove : not all
         if (isset($datalist['preloaded']) && $datalist['preloaded'] !=1) {
             $preloaded = $datalist['preloaded'];
@@ -237,7 +236,7 @@ class Projectcontroller extends Controller
         $project->delete();
         return response()->json(['success' => 'Project deleted successfully.'],200);
     }
-    
+
     public function display(){
         $projects = Project::all();
         $tags = Tag::all();

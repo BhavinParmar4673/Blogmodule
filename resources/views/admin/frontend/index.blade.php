@@ -35,9 +35,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="home_right_img">
-                            <img class="img-fluid"
-                                src="{{ asset('Image/banner/xhome-right.png.pagespeed.ic.bNTVRyMCQ6.png') }}"
-                                alt="no-image">
+                            <img class="img-responsive" src="{{asset('/Image/banner/Programming-amico.svg')}}" alt="animation Image">
                         </div>
                     </div>
                 </div>
