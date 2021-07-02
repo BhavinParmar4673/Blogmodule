@@ -2,8 +2,8 @@
 @section('title', 'single project')
 @section('content')
 
-<section class="project py-5">
-    <div class="container pt-5">
+<section class="project py-lg-5 py-sm-5">
+    <div class="container py-5">
             <div class="row">
             <div class="col-md-9 col-lg-9">
                 <div class="card mb-5 h-100">

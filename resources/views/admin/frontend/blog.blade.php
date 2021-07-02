@@ -19,7 +19,7 @@
 
     <div class="container">
         <div class="row">
-                <div class="col-lg-8 my-5">
+                <div class="col-lg-8 my-lg-5">
                     <div class="blog_deatils my-5">
                         @foreach ($posts as $post)
                                 <div class="card mb-5 h-100">

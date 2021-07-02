@@ -3,7 +3,7 @@
 @section('content')
 
 
-<section class="contact_area pt-5">
+<section class="contact_area pt-lg-5 pt-sm-5">
     <div class="contact-inner">
         <div class="container">
             <div class="contact-title text-center">

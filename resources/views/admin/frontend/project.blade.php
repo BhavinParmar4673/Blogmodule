@@ -2,7 +2,7 @@
 @section('title', 'All Project')
 @section('content')
 
-<div class="portfolio_filter py-5" id="portfolio">
+<div class="portfolio_filter py-lg-5 py-sm-5" id="portfolio">
     <div class="container py-5">
         <h5 class="text-muted pb-2">OUR PORTFOLIO</h5>
         <h1 class="heading-1 font-weight-bold">Check Our Recent<br> Client Work</h1>

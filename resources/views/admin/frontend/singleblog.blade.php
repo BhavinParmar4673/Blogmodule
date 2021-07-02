@@ -21,7 +21,7 @@
 <section class="main_blog">
     <div class="container">
     <div class="row">
-            <div class="col-lg-8 my-5">
+            <div class="col-lg-8 my-lg-5">
                 <div class="blog_deatils my-5">
                         <div class="card mb-5 h-100">
                                 <img class="img-fluid" src="{{$post->image_src}}" alt="Card image cap">
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-        
+
 
             <div class="col-lg-4 my-5">
                 <div class="blog_right_sidebar my-5">

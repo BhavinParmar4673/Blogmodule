@@ -124,11 +124,6 @@ body {
     background-size: 200% auto;
 }
 
-/* about */
-.main-div {
-    margin-top: 6rem;
-}
-
 /* Counter */
 .count h2 {
     color: rgb(137, 50, 191);
@@ -367,7 +362,6 @@ footer .footer_link:hover {
 }
 
 /* blog page */
-
 .banner_blog_inner {
     position: relative;
     overflow: hidden;
@@ -444,7 +438,8 @@ a:hover {
     border-bottom: 1px solid #f0e9ff;
 }
 .post_image img {
-    max-width: 40%;
+    max-width: 100px;
+    height: 100px;
 }
 
 .post_description a {

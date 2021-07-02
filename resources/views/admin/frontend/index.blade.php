@@ -69,7 +69,7 @@
         </div>
     </div> --}}
 
-    <div class="container" id="about">
+    <div class="container my-5" id="about">
         <div class="main-div row">
             <div class="col-md-6 col-lg-6">
                 <div class="creative">
