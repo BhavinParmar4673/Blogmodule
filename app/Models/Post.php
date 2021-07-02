@@ -21,7 +21,7 @@ class Post extends Model
         if (Storage::exists($this->image)) {
             return asset('storage/' . $this->image);
         }
-        return asset('/storage/uploads/avatar.png');
+        return asset('/storage/uploads/avatar.jpg');
     }
 
     public static function uploadimage($image)

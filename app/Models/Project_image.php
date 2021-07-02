@@ -10,7 +10,7 @@ class Project_image extends Model
 {
     use HasFactory;
 
-    
+
     protected $fillable = [
         'image', 'project_id',
     ];
@@ -25,7 +25,7 @@ class Project_image extends Model
         if (Storage::exists($this->image)) {
             return asset('storage/' . $this->image);
         }
-        return asset('/storage/uploads/avatar.png');
+        return asset('/storage/uploads/avatar.jpg');
     }
 
     public static function uploadimage($image)

@@ -11,7 +11,7 @@
                 <div class="collapse navbar-collapse offset" id="navbarResponsive">
                     <ul class="nav navbar-nav menu_nav">
                         <li class="{{request()->is('/') ? 'nav-item active' : 'nav-item' }}"><a class="nav-link py-3 px-0 px-lg-3" href="{{URL('/')}}">HOME</a></li>
-                        <li class="nav-item"><a class="nav-link py-3 px-0 px-lg-3" href="#about">ABOUT</a></li>
+                        <li class="nav-item"><a class="nav-link py-3 px-0 px-lg-3" href="{{URL('/')}}#about">ABOUT</a></li>
                         <li class="{{request()->is('admin/project') || request()->is('admin/projects/*') ? 'nav-item active' : 'nav-item' }}"><a class="nav-link py-3 px-0 px-lg-3" href="{{route('admin.project')}}">PORTFOLIO</a></li>
                         <li class="{{request()->is('admin/post') || request()->is('admin/posts/*') ? 'nav-item active' : 'nav-item' }}"><a class="nav-link py-3 px-0 px-lg-3" href="{{route('admin.post')}}">BLOG</a></li>
                         <li class="{{request()->is('admin/contact') ? 'nav-item active' : 'nav-item' }}"><a class="nav-link py-3 px-0 px-lg-3" href="{{route('admin.contact')}}">CONTACT</a></li>

@@ -5,13 +5,13 @@
                 <img src={{ asset('Image/xlogo2.png.pagespeed.ic.7Cvy5uEMuG.png') }} class="img-fluid py-4" alt="no-image">
             </div>
             <div class="col-md-12">
-                <div class="flex-center">
-                    <ul class="my-footer list-inline text-center">
-                        <li class="list-inline-item"><a href="" class="text-uppercase px-2 tab_link">HOME</a></li>
-                        <li class="list-inline-item"><a href="" class="text-uppercase px-2 tab_link">About</a></li>
-                        <li class="list-inline-item"><a href="" class="text-uppercase px-2 tab_link">Portfolio</a></li>
-                        <li class="list-inline-item"><a href="" class="text-uppercase px-2 tab_link">Blog</a></li>
-                        <li class="list-inline-item"><a href="" class="text-uppercase px-2 tab_link">Services</a></li>
+                <div class="flex-center bottom-footer">
+                    <ul class="my-footer list-inline text-center text-uppercase">
+                        <li class="{{request()->is('/') ? 'list-inline-item active' : 'list-inline-item' }}"><a href="{{URL('/')}}" class="text-uppercase px-2 tab_link">HOME</a></li>
+                        <li class="list-inline-item"><a href="{{URL('/')}}#about" class="text-uppercase px-2 tab_link">About</a></li>
+                        <li class="{{request()->is('admin/project') || request()->is('admin/projects/*')? 'list-inline-item active' : 'list-inline-item' }}"><a href="{{route('admin.project')}}" class="text-uppercase px-2 tab_link">Portfolio</a></li>
+                        <li class="{{request()->is('admin/post') || request()->is('admin/posts/*')  ? 'list-inline-item active' : 'list-inline-item' }}"><a href="{{route('admin.post')}}" class="text-uppercase px-2 tab_link">Blog</a></li>
+                        <li class="{{request()->is('admin/contact') ? 'list-inline-item active' : 'list-inline-item' }}"><a href="{{route('admin.contact')}}" class="text-uppercase px-2 tab_link">Contact</a></li>
                     </ul>
                 </div>
             </div>

@@ -263,7 +263,7 @@
     </div>
 
     @php
-    $blogs = App\Models\Post::orderBy('created_at', 'desc')
+    $blogs = App\Models\Post::latest()
         ->take(3)
         ->get();
     @endphp

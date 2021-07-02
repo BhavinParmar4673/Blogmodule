@@ -36,6 +36,7 @@ body {
     color: #efb6df;
 }
 
+
 .header_menu .menu_nav {
     width: 100%;
     margin-left: 140px;
@@ -356,6 +357,11 @@ div.service:hover {
     background-color: #f8faff;
 }
 
+.blog .card img{
+    height: 300px;
+    object-fit: cover;
+}
+
 .blog_link {
     text-decoration: none;
     color: black;
@@ -406,6 +412,9 @@ footer .fa_link:hover {
     color: #7AA641;
 }
 
+footer .bottom-footer li.active .tab_link {
+    color: rgb(163, 73, 164);
+}
 footer .footer_link {
     color: rgb(163, 73, 164);
     text-decoration: none;
@@ -422,7 +431,7 @@ footer .footer_link:hover {
     position: relative;
     overflow: hidden;
     width: 100%;
-    z-index: 1;
+    min-height: 490px;
     background: url('/Image/banner/xcommon-banner.png.pagespeed.ic.6oIu2tVgyg.webp') no-repeat right bottom;
     background-size: cover;
     z-index: 1;
@@ -434,9 +443,14 @@ a:hover {
     color: #fff;
 }
 
+
 .blog_deatils {
     position: relative;
     box-shadow: 0 10px 20px 0 rgb(221 221 221 / 30%);
+}
+.blog_deatils img,.project img{
+    height: 500px;
+    object-fit: cover;
 }
 
 .blog_deatils .date {
@@ -534,29 +548,29 @@ a:hover {
 /* contact-us */
 
 .contact_area{
-    background: url('/Image/contact/crew-unsplash.jpg') no-repeat top center;
-    background-position: center;
-    background-size: cover;
-    min-height: 890px;
+    min-height: 800px;
     position: relative;
     overflow: hidden;
-    z-index: 1;
+    top: 70px;
 }
-
-.contact-inner{
-    position:absolute;
-    width: 100%;
-    min-height: 500px;
-    top: 90px;
-}
-.contact-title h2{
-    font-size: 50px;
+.contactform-design input::-webkit-input-placeholder{
+    color:lightslategray;
     font-weight: bold;
 }
-.contact-title span{
-    font-size: 50px;
+.contactform-design textarea::-webkit-input-placeholder{
+    color:lightslategray;
+    font-weight: bold;
 }
-
+.contact-title h2{
+    font-family: "Roboto", sans-serif;
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
+.contact-title h3{
+    font-family: "Roboto", sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.2;
+}
 
 .form-button{
     display: inline-block;
@@ -577,18 +591,18 @@ a:hover {
     background-size: 200% auto;
 }
 
-.contact-logo .design{
-    width: 70px;
-    height: 70px;
-    background-color: #6c757d;
+.contact-logo li span{
+   color: orange;
+   font-size: 55px;
+}
+.contact-logo li p{
+    font-size: 20px;
+    font-family: "Roboto", sans-serif;
+    line-height: 25px;
+    padding: 5px 0;
 }
 
-.contact-logo .design span{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 25px 0;
-}
+
 
 
 @media screen and (max-width: 720px) {

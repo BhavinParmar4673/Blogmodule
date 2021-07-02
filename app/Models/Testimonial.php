@@ -20,7 +20,7 @@ class Testimonial extends Model
         if (Storage::exists($this->image)) {
             return asset('storage/' . $this->image);
         }
-        return asset('/storage/uploads/avatar.png');
+        return asset('/storage/uploads/avatar.jpg');
     }
 
     public static function uploadimage($image)
@@ -59,4 +59,10 @@ class Testimonial extends Model
     {
         return $this->hasOne(Member::class,'testimonial_id');
     }
+
+    public static function getMyData(){
+        $user = Testimonial::find();
+    }
+
+
 }
