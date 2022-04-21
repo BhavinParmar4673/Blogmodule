@@ -12,7 +12,7 @@ class Testimonial extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'slug','content', 'image','visibility','status',
+        'title', 'slug', 'content', 'image', 'visibility', 'status',
     ];
 
     public function getImageSrcAttribute()
@@ -20,7 +20,7 @@ class Testimonial extends Model
         if (Storage::exists($this->image)) {
             return asset('storage/' . $this->image);
         }
-        return asset('/storage/uploads/avatar.jpg');
+        return 'https://via.placeholder.com/1200x800.png';
     }
 
     public static function uploadimage($image)
@@ -34,19 +34,21 @@ class Testimonial extends Model
 
     public function deleteimage()
     {
-        if($this->image && Storage::exists($this->image)){
+        if ($this->image && Storage::exists($this->image)) {
             Storage::delete($this->image);
         }
     }
 
-    public function setSlugAttribute($value) {
+    public function setSlugAttribute($value)
+    {
         if (static::whereSlug($slug = Str::slug($value))->exists()) {
             $slug = $this->incrementSlug($slug);
         }
         $this->attributes['slug'] = $slug;
     }
 
-    public function incrementSlug($slug) {
+    public function incrementSlug($slug)
+    {
         $original = $slug;
         $count = 1;
         while (static::whereSlug($slug)->exists()) {
@@ -57,12 +59,11 @@ class Testimonial extends Model
 
     public function member()
     {
-        return $this->hasOne(Member::class,'testimonial_id');
+        return $this->hasOne(Member::class, 'testimonial_id');
     }
 
-    public static function getMyData(){
+    public static function getMyData()
+    {
         $user = Testimonial::find();
     }
-
-
 }

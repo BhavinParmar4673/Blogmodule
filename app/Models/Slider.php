@@ -10,7 +10,7 @@ class Slider extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'heading', 'description','link','linkname','image','status',
+        'heading', 'description', 'link', 'linkname', 'image', 'status',
     ];
 
     public function getImageSrcAttribute()
@@ -18,7 +18,7 @@ class Slider extends Model
         if (Storage::exists($this->image)) {
             return asset('storage/' . $this->image);
         }
-        return asset('/storage/uploads/avatar.jpg');
+        return 'https://via.placeholder.com/120x80.png';
     }
 
     public static function uploadimage($image)
@@ -32,7 +32,7 @@ class Slider extends Model
 
     public function deleteimage()
     {
-        if($this->image && Storage::exists($this->image)){
+        if ($this->image && Storage::exists($this->image)) {
             Storage::delete($this->image);
         }
     }

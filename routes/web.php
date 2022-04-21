@@ -16,9 +16,14 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('admin.frontend.index');
+    return view('frontend.index');
 });
-
+Route::get('project', 'Projectcontroller@display')->name('project');
+Route::get('project/{id}', 'Projectcontroller@singleProject')->name('project.show');
+Route::get('post', 'PostController@post')->name('post');
+Route::get('post/{slug}', 'PostController@show')->name('post.show');
+Route::get('/contact', 'ContactController@contactForm')->name('contact');
+Route::post('/contact', 'ContactController@storeContactForm')->name('contact.store');
 
 Auth::routes();
 
@@ -27,17 +32,14 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['auth'])->group(function () {
     Route::resource('blogs', 'BlogController');
     // Comments routes
-	Route::group(['prefix' => '/comments', 'as' => 'comments.'], function() {
+    Route::group(['prefix' => '/comments', 'as' => 'comments.'], function () {
         // store comment route
-		Route::post('/{post}', 'CommentController@store')->name('store');
-	});
+        Route::post('/{post}', 'CommentController@store')->name('store');
+    });
 
-	// Replies routes
-	Route::group(['prefix' => '/replies', 'as' => 'replies.'], function() {
+    // Replies routes
+    Route::group(['prefix' => '/replies', 'as' => 'replies.'], function () {
         // store reply route
-		Route::post('/{comment}', 'ReplyController@store')->name('store');
-	});
+        Route::post('/{comment}', 'ReplyController@store')->name('store');
+    });
 });
-
-
-

@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 @section('content')
     <div class="container py-4">
         <div class="d-flex align-items-center justify-content-center py-4">

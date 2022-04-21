@@ -18,24 +18,24 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/frontend.css') }}" rel="stylesheet">
     <link href="{{ asset('css/themify-icons.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('css/owl.carousel.min.css')}}">
-    <link rel="stylesheet" href="{{asset('css/owl.theme.default.min.css')}}">
-    
+    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
+
 </head>
 
 <body>
     <!-- Site wrapper -->
     <div id="app">
-        @include('admin.frontend.nav')
+        @include('frontend.nav')
         <div>
             @yield('content')
         </div>
 
-        @include('admin.frontend.footer')
+        @include('frontend.footer')
     </div>
     <!-- ./wrapper -->
 
-     <!-- jQuery -->
+    <!-- jQuery -->
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ mix('js/popper.js') }}"></script>

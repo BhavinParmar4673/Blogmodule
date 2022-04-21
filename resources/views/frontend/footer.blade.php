@@ -2,16 +2,22 @@
     <div class="container">
         <div class="row py-5 justify-content-center">
             <div class="footer_image">
-                <img src={{ asset('Image/xlogo2.png.pagespeed.ic.7Cvy5uEMuG.png') }} class="img-fluid py-4" alt="no-image">
+                <img src={{ asset('Image/xlogo2.png.pagespeed.ic.7Cvy5uEMuG.png') }} class="img-fluid py-4"
+                    alt="no-image">
             </div>
             <div class="col-md-12">
                 <div class="flex-center bottom-footer">
                     <ul class="my-footer list-inline text-center text-uppercase">
-                        <li class="{{request()->is('/') ? 'list-inline-item active' : 'list-inline-item' }}"><a href="{{URL('/')}}" class="text-uppercase px-2 tab_link">HOME</a></li>
-                        <li class="list-inline-item"><a href="{{URL('/')}}#about" class="text-uppercase px-2 tab_link">About</a></li>
-                        <li class="{{request()->is('admin/project') || request()->is('admin/projects/*')? 'list-inline-item active' : 'list-inline-item' }}"><a href="{{route('admin.project')}}" class="text-uppercase px-2 tab_link">Portfolio</a></li>
-                        <li class="{{request()->is('admin/post') || request()->is('admin/posts/*')  ? 'list-inline-item active' : 'list-inline-item' }}"><a href="{{route('admin.post')}}" class="text-uppercase px-2 tab_link">Blog</a></li>
-                        <li class="{{request()->is('admin/contact') ? 'list-inline-item active' : 'list-inline-item' }}"><a href="{{route('admin.contact')}}" class="text-uppercase px-2 tab_link">Contact</a></li>
+                        <li class="list-inline-item"><a href="{{ URL('/') }}"
+                                class="text-uppercase px-2 tab_link">HOME</a></li>
+                        <li class="list-inline-item"><a href="{{ URL('/') }}#about"
+                                class="text-uppercase px-2 tab_link">About</a></li>
+                        <li class="list-inline-item"><a href="{{ route('project') }}"
+                                class="text-uppercase px-2 tab_link">Portfolio</a></li>
+                        <li class="list-inline-item"><a href="{{ route('post') }}"
+                                class="text-uppercase px-2 tab_link">Blog</a></li>
+                        <li class="list-inline-item"><a href="{{ route('contact') }}"
+                                class="text-uppercase px-2 tab_link">Contact</a></li>
                     </ul>
                 </div>
             </div>
@@ -52,8 +58,10 @@
                         </li>
                     </ul>
                 </div>
-                <div class="text-center text-muted">Copyright &copy; 2021 All rights reserved I This Template is made with
-                     <i class="fas fa-heart"></i> by <a href class="footer_link">Colorib</a></div>
+                <div class="text-center text-muted">Copyright &copy; 2021 All rights reserved I This Template is made
+                    with
+                    <i class="fas fa-heart"></i> by <a href class="footer_link">Colorib</a>
+                </div>
             </div>
         </div>
 

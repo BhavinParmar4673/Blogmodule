@@ -16,7 +16,7 @@ class Tagcontroller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
         return view('admin.tag.index');
     }
 
@@ -36,8 +36,8 @@ class Tagcontroller extends Controller
             return $query->where('id', 'like', '%' . $searchValue . '%')
             ->orwhere('name', 'like', '%' . $searchValue . '%');
             })->count();
-                
-           
+
+
         // Fetch records
         $records = Tag::orderBy($columnName, $columnSortOrder)
         ->when($searchValue !='',function($query) use($searchValue){
@@ -48,26 +48,26 @@ class Tagcontroller extends Controller
             ->skip($start)
             ->take($rowperpage)
             ->get();
-           
+
         foreach ($records as $record) {
             $id = $record->id;
             $tag_name = $record->name;
             $action = '<a href="javascript:void(0);"   data-id=' . $record->id . ' data-url="' . route('admin.tag.edit', $record->id) . '" class="edit btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                       </a>
-                      <a href="javascript:void(0);" data-url="' . route('admin.tag.destroy', $record->id) . '" 
+                      <a href="javascript:void(0);" data-url="' . route('admin.tag.destroy', $record->id) . '"
                         data-id=' . $record->id . '  class="delete btn btn-danger btn-sm">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                       </a>';
-           
-          
+
+
             $data_arr[] = array(
                 "id" => $id,
                 "name" => $tag_name,
                 "action" => $action,
             );
         }
-        
+
         $response = array(
             "draw" => intval($draw),
             "iTotalRecords" => $totalRecords,
@@ -99,7 +99,7 @@ class Tagcontroller extends Controller
         $this->validate($request,[
             'tag' =>'required',
            ]);
-   
+
            $tag = new Tag;
            $tag->name = $request->tag;
            $tag->save();
@@ -125,7 +125,7 @@ class Tagcontroller extends Controller
      */
     public function edit($id)
     {
-        $tag = Tag::findorFail($id);
+        $tag = Tag::findOrFail($id);
         if($tag){
             $response = response()->json($tag);
         }else{
@@ -144,7 +144,7 @@ class Tagcontroller extends Controller
     public function update(Request $request, $id)
     {
         $tag_id = $request->tag_id;
-        $tag = Tag::findorFail($tag_id);
+        $tag = Tag::findOrFail($tag_id);
         $tag->name = $request->tag;
         $tags = $tag->save();
         return response()->json([$tags, 'success' => 'Tag update successfully']);
@@ -157,12 +157,12 @@ class Tagcontroller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {   
+    {
         if (DB::table('project_tag')->where('tag_id',$id)->doesntExist() || DB::table('post_tag')->where('tag_id',$id)->doesntExist() ) {
-            Tag::findorFail($id)->delete();
+            Tag::findOrFail($id)->delete();
             return response()->json(['success'=>'Tag deleted successfully.']);
         }
         return response()->json(['success'=>'Tag Use In Post or Category can not be deleted.']);
     }
-    
+
 }

@@ -1,4 +1,4 @@
-@extends('admin.frontend.master')
+@extends('frontend.master')
 @section('title', 'Home Page')
 @section('content')
 
@@ -35,7 +35,8 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="home_right_img">
-                            <img class="img-responsive" src="{{asset('/Image/banner/Programming-amico.svg')}}" alt="animation Image">
+                            <img class="img-responsive" src="{{ asset('/Image/banner/Programming-amico.svg') }}"
+                                alt="animation Image">
                         </div>
                     </div>
                 </div>
@@ -118,7 +119,8 @@
                         <img src="{{ asset('Image/services/xs2.png.pagespeed.ic.s3FSVmykhX.png') }}" alt="no-image"
                             class="img-fluid py-4">
                         <h2 class="headings">UX/UI Design</h2>
-                        <p class="py-3">It is a long established fact that a reader will be distracted by the readable
+                        <p class="py-3">It is a long established fact that a reader will be distracted by the
+                            readable
                             content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a
                             more-or-less normal distribution of letters, as opposed to using 'Content here, content here',
                             making it look like readable English.</p>
@@ -191,14 +193,16 @@
             <h1 class="heading-1 font-weight-bold">Check Our Recent<br> Client Work</h1>
             @php
 
-             $projects =  App\Models\Project::latest()->take(8)->get();
+                $projects = App\Models\Project::latest()
+                    ->take(8)
+                    ->get();
             @endphp
             <div class="row py-4">
                 @foreach ($projects as $key => $myproject)
                     @if ($key >= 0 && $key < 2)
                         <div class="col-lg-6 col-12 mb-4">
                             <div class="portfolio-item">
-                                <a class="portfolio-link" href="{{route('admin.projects.show',$myproject->id)}}">
+                                <a class="portfolio-link" href="{{ route('admin.projects.show', $myproject->id) }}">
                                     <div class="thumbnail">
                                         @foreach ($myproject->project_images as $image)
                                             <img class="img-fluid" src="{{ $image->image_src }}" alt="..." />
@@ -206,7 +210,7 @@
                                     </div>
                                     <div class="portfolio-hover">
                                         <h2 class="work__title">{{ $myproject->title }}</h2>
-                                        <p class="work__desc">{{  Str::limit($myproject->description, 35) }}</p>
+                                        <p class="work__desc">{{ Str::limit($myproject->description, 35) }}</p>
                                     </div>
                                 </a>
                             </div>
@@ -215,7 +219,7 @@
                     @if ($key >= 2 && $key < 5)
                         <div class="col-lg-4 col-12 mb-4">
                             <div class="portfolio-item">
-                                <a class="portfolio-link" href="{{route('admin.projects.show',$myproject->id)}}">
+                                <a class="portfolio-link" href="{{ route('admin.projects.show', $myproject->id) }}">
                                     <div class="thumbnail">
                                         @foreach ($myproject->project_images as $image)
                                             <img class="img-fluid" src="{{ $image->image_src }}" alt="..." />
@@ -223,7 +227,7 @@
                                     </div>
                                     <div class="portfolio-hover">
                                         <h2 class="work__title">{{ $myproject->title }}</h2>
-                                        <p class="work__desc">{{  Str::limit($myproject->description, 35) }}</p>
+                                        <p class="work__desc">{{ Str::limit($myproject->description, 35) }}</p>
                                     </div>
                                 </a>
                             </div>
@@ -232,7 +236,7 @@
                     @if ($key >= 5 && $key < 8)
                         <div class="col-lg-3 col-12 mb-4">
                             <div class="portfolio-item">
-                                <a class="portfolio-link" href="{{route('admin.projects.show',$myproject->id)}}">
+                                <a class="portfolio-link" href="{{ route('admin.projects.show', $myproject->id) }}">
                                     <div class="thumbnail">
                                         @foreach ($myproject->project_images as $image)
                                             <img class="img-fluid" src="{{ $image->image_src }}" alt="..." />
@@ -240,7 +244,7 @@
                                     </div>
                                     <div class="portfolio-hover">
                                         <h2 class="work__title">{{ $myproject->title }}</h2>
-                                        <p class="work__desc">{{  Str::limit($myproject->description, 35) }}</p>
+                                        <p class="work__desc">{{ Str::limit($myproject->description, 35) }}</p>
                                     </div>
                                 </a>
                             </div>
@@ -249,7 +253,7 @@
                 @endforeach
                 <div class="col-lg-3 col-12 mb-4">
                     <div class="portfolio-item">
-                        <a class="portfolio-link button_link" href="{{route('admin.project')}}">
+                        <a class="portfolio-link button_link" href="{{ route('project') }}">
                             <div class="thumbnail">
                                 <h2>View More<span class="float-right ti-arrow-right"></h2>
                             </div>
@@ -277,19 +281,19 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between pb-2">
                                     <a href="#" class="blog_link"><span
-                                            class="ti-user pr-2"></span>{{ Auth::guard('admin')->check() ? Auth::guard('admin')->user()->name :'Admin'  }}</a>
+                                            class="ti-user pr-2"></span>{{ Auth::guard('admin')->check() ? Auth::guard('admin')->user()->name : 'Admin' }}</a>
                                     <a href="#" class="blog_link"><span
                                             class="ti-calendar pr-2"></span>{{ $blog->updated_at->toDateString() }}</a>
                                 </div>
                                 <a href="#" class="blog_link">
                                     <h5 class="card-title">{{ $blog->title }}</h5>
                                 </a>
-                                <p class="card-text">{{($blog->description) }}</p>
+                                <p class="card-text">{{ $blog->description }}</p>
                                 <a href="" class="blog_link_design">LEARN MORE</a>
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                @endforeach
 
             </div>
         </div>
@@ -301,24 +305,24 @@
                 <div class="col-md-12">
                     <div class="owl-carousel owl-theme">
                         <div class="item px-3">
-                                <img class="img-fluid"
-                                    src="{{ asset('Image/brands/xlogo1.png.pagespeed.ic.zYTo7zZjjz.png') }}" alt="">
+                            <img class="img-fluid"
+                                src="{{ asset('Image/brands/xlogo1.png.pagespeed.ic.zYTo7zZjjz.png') }}" alt="">
                         </div>
                         <div class="item px-3">
-                                <img class="img-fluid"
-                                    src="{{ asset('Image/brands/xlogo2.png.pagespeed.ic.Z25wYds54V.png') }}" alt="">
+                            <img class="img-fluid"
+                                src="{{ asset('Image/brands/xlogo2.png.pagespeed.ic.Z25wYds54V.png') }}" alt="">
                         </div>
                         <div class="item px-3">
-                                <img class="img-fluid"
-                                    src="{{ asset('Image/brands/xlogo3.png.pagespeed.ic.B7WJK2eRsf.png') }}" alt="">
+                            <img class="img-fluid"
+                                src="{{ asset('Image/brands/xlogo3.png.pagespeed.ic.B7WJK2eRsf.png') }}" alt="">
                         </div>
                         <div class="item px-3">
-                                <img class="img-fluid"
-                                    src="{{ asset('Image/brands/xlogo4.png.pagespeed.ic.wyij8nrzlO.png') }}" alt="">
+                            <img class="img-fluid"
+                                src="{{ asset('Image/brands/xlogo4.png.pagespeed.ic.wyij8nrzlO.png') }}" alt="">
                         </div>
                         <div class="item px-3">
-                                <img class="img-fluid"
-                                    src="{{ asset('Image/brands/xlogo5.png.pagespeed.ic.HC2c65JSLR.png') }}" alt="">
+                            <img class="img-fluid"
+                                src="{{ asset('Image/brands/xlogo5.png.pagespeed.ic.HC2c65JSLR.png') }}" alt="">
                         </div>
                     </div>
                 </div>

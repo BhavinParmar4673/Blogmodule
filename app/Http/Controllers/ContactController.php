@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller as Controller;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class ContactController extends Controller
 {
     public function contactForm()
     {
-        return view('admin.frontend.contact');
+        return view('frontend.contact');
     }
 
     public function storeContactForm(Request $request)

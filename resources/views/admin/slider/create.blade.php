@@ -44,7 +44,7 @@
                                     </ul> --}}
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
-                                    
+
                                     <div class="tab-content">
                                         <div class="active tab-pane" id="activity">
                                             <div class="form-group">
@@ -75,7 +75,7 @@
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <img
-                                                    src="https://www.riobeauty.co.uk/images/product_image_not_found.gif"
+                                                    src="https://via.placeholder.com/120x80.png"
                                                     alt="preview image" style="width:120px;">
                                                 </div>
                                                 <div class="form-group col-md-4">

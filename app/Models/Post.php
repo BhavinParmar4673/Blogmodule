@@ -13,7 +13,7 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'slug','content', 'image','description','status',
+        'title', 'slug', 'content', 'image', 'description', 'status',
     ];
 
     public function getImageSrcAttribute()
@@ -21,7 +21,7 @@ class Post extends Model
         if (Storage::exists($this->image)) {
             return asset('storage/' . $this->image);
         }
-        return asset('/storage/uploads/avatar.jpg');
+        return 'https://via.placeholder.com/120x80.png';
     }
 
     public static function uploadimage($image)
@@ -35,7 +35,7 @@ class Post extends Model
 
     public function deleteimage()
     {
-        if($this->image && Storage::exists($this->image)){
+        if ($this->image && Storage::exists($this->image)) {
             Storage::delete($this->image);
         }
     }
@@ -52,20 +52,22 @@ class Post extends Model
 
     public function getStatusAttribute($attribute)
     {
-        return[
-            0=>'Pending',
-            1=>'Published'
+        return [
+            0 => 'Pending',
+            1 => 'Published'
         ][$attribute];
     }
 
-    public function setSlugAttribute($value) {
+    public function setSlugAttribute($value)
+    {
         if (static::whereSlug($slug = Str::slug($value))->exists()) {
             $slug = $this->incrementSlug($slug);
         }
         $this->attributes['slug'] = $slug;
     }
 
-    public function incrementSlug($slug) {
+    public function incrementSlug($slug)
+    {
         $original = $slug;
         $count = 1;
         while (static::whereSlug($slug)->exists()) {
@@ -73,5 +75,4 @@ class Post extends Model
         }
         return $slug;
     }
-
 }

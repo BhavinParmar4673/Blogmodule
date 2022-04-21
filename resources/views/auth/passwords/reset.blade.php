@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
     <div class="container py-4">
@@ -46,7 +46,8 @@
                             </div>
                             <div class="input-group mb-3">
                                 <input id="password-confirm" type="password" placeholder="{{ __('Confirm Password') }}"
-                                    class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                    class="form-control" name="password_confirmation" required
+                                    autocomplete="new-password">
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-lock"></span>
@@ -71,6 +72,6 @@
             </div>
             <!-- /
 
-    </div>
-    </div>
+        </div>
+        </div>
 @endsection

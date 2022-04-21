@@ -10,26 +10,27 @@ class Blog extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'title', 'body','image','cat_id','project_id'];
+    protected $fillable = ['user_id', 'title', 'body', 'image', 'cat_id', 'project_id'];
 
-    public function user() {
-    	return $this->belongsTo(User::class, 'user_id');
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function comments()
     {
-    	return $this->hasMany(Comment::class, 'post_id');
+        return $this->hasMany(Comment::class, 'post_id');
     }
 
 
     public function category()
     {
-    	return $this->belongsTo(Category::class, 'cat_id');
+        return $this->belongsTo(Category::class, 'cat_id');
     }
 
     public function project()
     {
-    	return $this->belongsTo(Project::class, 'project_id');
+        return $this->belongsTo(Project::class, 'project_id');
     }
 
     public function getImageSrcAttribute()
@@ -37,7 +38,7 @@ class Blog extends Model
         if (Storage::exists($this->image)) {
             return asset('storage/' . $this->image);
         }
-        return asset('/storage/uploads/avatar.jpg');
+        return 'https://via.placeholder.com/120x80.png';
     }
 
     public static function uploadimage($image)
@@ -51,7 +52,7 @@ class Blog extends Model
 
     public function deleteimage()
     {
-        if($this->image && Storage::exists($this->image)){
+        if ($this->image && Storage::exists($this->image)) {
             Storage::delete($this->image);
         }
     }

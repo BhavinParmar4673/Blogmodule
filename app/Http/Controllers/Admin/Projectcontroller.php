@@ -49,22 +49,22 @@ class Projectcontroller extends Controller
             'tags' => 'required|min:1'
         ]);
 
-        $project =new Project();
+        $project = new Project();
         $project->title = $request->title;
         $project->description = $request->description;
         $project->save();
 
         if ($request->hasFile('images')) {
-            foreach($request->file('images') as $file){
+            foreach ($request->file('images') as $file) {
                 $Project_image = new Project_image();
                 $Project_image->project_id = $project->id;
-                $path =$Project_image->uploadimage($file);
+                $path = $Project_image->uploadimage($file);
                 $Project_image->image   = $path;
                 $Project_image->save();
             }
         }
         $project->tags()->sync($request->tags, false);
-        return response()->json(['success' => 'Project Add successfully.'],200);
+        return response()->json(['success' => 'Project Add successfully.'], 200);
     }
 
     public function allproject(Request $request)
@@ -99,7 +99,7 @@ class Projectcontroller extends Controller
             $id = $record->id;
             $title = $record->title;
             $description = $record->description;
-            $image ='<a href="' . route('admin.projects.show', $record->id) . '">Image</a>';
+            $image = '<a href="' . route('admin.projects.show', $record->id) . '">Image</a>';
             $action = '<a href="javascript:void(0);"   data-id=' . $record->id . ' data-url="' . route('admin.projects.edit', $record->id) . '" class="edit btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                       </a>
@@ -138,13 +138,8 @@ class Projectcontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        // $projectimage = Project_image::where('project_id',$id)->get();
-        // return view('admin.project.display',compact('projectimage'));
-
-        $project =  Project::findorFail($id);
-        return view('admin.frontend.singleproject',compact('project'));
     }
 
     /**
@@ -155,19 +150,19 @@ class Projectcontroller extends Controller
      */
     public function edit($id)
     {
-        $project = Project::findorFail($id);
-        if($project){
+        $project = Project::findOrFail($id);
+        if ($project) {
             $tags = $project->tags;
-            $projectimg= $project->project_images;
-            foreach($projectimg as $image){
-                $images[]=  array(
-                    "id" =>$image->id,
-                    "image"=>$image->image_src
-                    );
+            $projectimg = $project->project_images;
+            foreach ($projectimg as $image) {
+                $images[] =  array(
+                    "id" => $image->id,
+                    "image" => $image->image_src
+                );
             }
-            $response = response()->json([$project, $tags,$images]);
-        }else{
-            $response =response()->json(['data' => 'Resource not found'], 404);
+            $response = response()->json([$project, $tags, $images]);
+        } else {
+            $response = response()->json(['data' => 'Resource not found'], 404);
         }
         return $response;
     }
@@ -183,31 +178,31 @@ class Projectcontroller extends Controller
     {
         $datalist = $request->all();
         $project_id = $request->project_id;
-        $project = Project::findorFail($project_id);
+        $project = Project::findOrFail($project_id);
         $project->title = $request->title;
         $project->description = $request->description;
         $project->save();
-         //one or more preoladed image remove : not all
-        if (isset($datalist['preloaded']) && $datalist['preloaded'] !=1) {
+        //one or more preoladed image remove : not all
+        if (isset($datalist['preloaded']) && $datalist['preloaded'] != 1) {
             $preloaded = $datalist['preloaded'];
-            $delete_image = Project_image::whereNotIn('id',$preloaded)->where('project_id',$project_id)->get();
-            $delete_image->each(function($image){
+            $delete_image = Project_image::whereNotIn('id', $preloaded)->where('project_id', $project_id)->get();
+            $delete_image->each(function ($image) {
                 $image->deleteimage();
             });
-            Project_image::whereNotIn('id',$preloaded)->where('project_id',$project_id)->delete();
+            Project_image::whereNotIn('id', $preloaded)->where('project_id', $project_id)->delete();
             //all preoladed image remove
-        }else{
-            $remove_image = Project_image::where('project_id',$project_id)->get();
-            $remove_image->each(function($image){
+        } else {
+            $remove_image = Project_image::where('project_id', $project_id)->get();
+            $remove_image->each(function ($image) {
                 $image->deleteimage();
             });
-            Project_image::where('project_id',$project_id)->delete();
+            Project_image::where('project_id', $project_id)->delete();
         }
 
         //insert a new image
         if ($request->hasFile('images')) {
             $photos = $request->file('images');
-            foreach($photos as $file){
+            foreach ($photos as $file) {
                 $Project_image = new Project_image();
                 $Project_image->project_id = $project->id;
                 $path = $Project_image->uploadimage($file);
@@ -216,7 +211,7 @@ class Projectcontroller extends Controller
             }
         }
         $project->tags()->sync($request->tags);
-        return response()->json(['success' => 'Project update successfully'],200);
+        return response()->json(['success' => 'Project update successfully'], 200);
     }
 
     /**
@@ -227,68 +222,55 @@ class Projectcontroller extends Controller
      */
     public function destroy($id)
     {
-        $project = Project::findorFail($id);
-        $project->project_images->each(function($image){
-            if($image->image){
+        $project = Project::findOrFail($id);
+        $project->project_images->each(function ($image) {
+            if ($image->image) {
                 $image->deleteimage();
             }
         });
         $project->delete();
-        return response()->json(['success' => 'Project deleted successfully.'],200);
+        return response()->json(['success' => 'Project deleted successfully.'], 200);
     }
 
-    public function display(){
-        $projects = Project::all();
-        $tags = Tag::all();
-        return view('admin.frontend.project',[
-            'projects' => $projects,
-            'tags' => $tags
-        ]);
-    }
+
 
     public function filter(Request $request)
     {
         $tag_id = $request->id;
-        if($tag_id)
-        {
-             //filter project
-             if($tag_id == 'all'){
+        if ($tag_id) {
+            //filter project
+            if ($tag_id == 'all') {
                 $projects = Project::all();
-             }else{
-                $projects = Project::whereHas('tags', function($query) use($tag_id) {
+            } else {
+                $projects = Project::whereHas('tags', function ($query) use ($tag_id) {
                     $query->where('tags.id', $tag_id);
                 })->get();
             }
 
             $html = '';
-            foreach($projects as $key => $myproject){
-            $html .= '<div class="col-lg-6 col-sm-12 mb-4">
+            foreach ($projects as $key => $myproject) {
+                $html .= '<div class="col-lg-6 col-sm-12 mb-4">
                 <div class="itembox all">
                         <div class="portfolio-item">
-                            <a class="portfolio-link" href="'.route('admin.projects.show',$myproject->id).'">
+                            <a class="portfolio-link" href="' . route('admin.projects.show', $myproject->id) . '">
                             <div class="thumbnail">';
-                                foreach ($myproject->project_images as $image){
-                                    $html .= '<img class="img-fluid" src="'.$image->image_src.'" alt="..." />';
-                                }
-                            $html .= '</div>
+                foreach ($myproject->project_images as $image) {
+                    $html .= '<img class="img-fluid" src="' . $image->image_src . '" alt="..." />';
+                }
+                $html .= '</div>
                             </a>
                         </div>
                         <div class="portfolio-details mt-4">
-                            <h2 class="work__title">'.$myproject->title.'</h2>
-                            <p class="text-muted">'.$myproject->description.'</p>
+                            <h2 class="work__title">' . $myproject->title . '</h2>
+                            <p class="text-muted">' . $myproject->description . '</p>
                         </div>
                     </div>
                 </div>';
             }
             $response =  response()->json(['html' => $html]);
-        }else{
+        } else {
             $response = response()->json(['data' => 'Resource not found'], 404);
         }
         return $response;
     }
-
-
-
-
-
 }

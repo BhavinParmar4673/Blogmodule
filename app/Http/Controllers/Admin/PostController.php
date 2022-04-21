@@ -22,7 +22,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
         return view('admin.post.index');
     }
 
@@ -45,7 +45,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required',  
+            'title' => 'required',
             'content' => 'required|min:5|max:10000',
             'description' => 'required|min:5|max:200',
             'categorys' => 'required',
@@ -69,7 +69,7 @@ class PostController extends Controller
 
         $post->tags()->sync($request->tags);
         $post->categorys()->sync($request->categorys);
-        
+
         if ($request->get('submit') == 'save') {
             return redirect()->route('admin.posts.index')->with('message', 'Blog Created Successfully');
         } elseif ($request->get('submit') == 'apply') {
@@ -110,7 +110,7 @@ class PostController extends Controller
             foreach ($records as $record) {
                 $id = $record->id;
                 $title =  $record->title;
-                $post = Post::findorFail($id);
+                $post = Post::findOrFail($id);
                 $categorylist = "";
                 foreach ($post->categorys as $category) {
                     $categorylist .=  '<span class="badge badge-info mr-1">' . $category->name . '</span>';
@@ -122,7 +122,7 @@ class PostController extends Controller
                 $operation = '<a href="' . route('admin.posts.edit', $record->id) . '"  class="edit btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                       </a>
-                      <a href="javascript:void(0);" data-url="' . route('admin.posts.destroy', $record->id) . '" 
+                      <a href="javascript:void(0);" data-url="' . route('admin.posts.destroy', $record->id) . '"
                         data-id=' . $record->id . '  class="delete btn btn-danger btn-sm">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                       </a>';
@@ -147,25 +147,18 @@ class PostController extends Controller
             );
             return response()->json($response, 200);
     }
-    
+
 
     /**
      * Display the specified resource.
      *
      * @param  String $slug
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
-    {   
-        $post = Post::where('slug',$slug)->first();
-        $categorys = Category::all();
-        $blogs = Post::latest()->take(4)->get();
-        return view('admin.frontend.singleblog',[
-            'post' => $post,
-            'categorys' => $categorys,
-            'blogs' => $blogs
-        ]);
+    public function show()
+    {
+      
     }
 
     /**
@@ -259,17 +252,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function post()
-    {   
-        $posts = Post::latest()->paginate(5);
-        $blogs = Post::latest()->take(4)->get();
-        $categorys = Category::all();
-        return view('admin.frontend.blog',[
-            'posts' => $posts,
-            'categorys' => $categorys,
-            'blogs' => $blogs
-        ]);
-    }
+
 
 
 

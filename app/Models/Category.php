@@ -11,15 +11,15 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description','image',
+        'name', 'description', 'image',
     ];
 
     public function getImageSrcAttribute()
     {
-        if(Storage::exists($this->image)){
-            return asset('storage/'.$this->image);
+        if (Storage::exists($this->image)) {
+            return asset('storage/' . $this->image);
         }
-        return asset('/storage/uploads/avatar.jpg');
+        return 'https://via.placeholder.com/120x80.png';
     }
 
 
@@ -34,17 +34,17 @@ class Category extends Model
 
     public function deleteimage()
     {
-        if($this->image && Storage::exists($this->image)){
+        if ($this->image && Storage::exists($this->image)) {
             Storage::delete($this->image);
         }
     }
 
     public function blog()
     {
-    	return $this->hasMany(Blog::class, 'post_id');
+        return $this->hasMany(Blog::class, 'post_id');
     }
 
-    public Function post()
+    public function post()
     {
         return $this->belongsToMany(Post::class);
     }

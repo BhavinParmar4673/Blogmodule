@@ -25,7 +25,7 @@ class Project_image extends Model
         if (Storage::exists($this->image)) {
             return asset('storage/' . $this->image);
         }
-        return asset('/storage/uploads/avatar.jpg');
+        return 'https://via.placeholder.com/120x80.png';
     }
 
     public static function uploadimage($image)
@@ -39,9 +39,8 @@ class Project_image extends Model
 
     public function deleteimage()
     {
-        if($this->image && Storage::exists($this->image)){
+        if ($this->image && Storage::exists($this->image)) {
             Storage::delete($this->image);
         }
     }
-
 }

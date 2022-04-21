@@ -37,11 +37,8 @@ Route::middleware(['admin.auth'])->group(function () {
     Route::resource('tag', 'Tagcontroller');
 
     //home page using
-    Route::get('/project','Projectcontroller@display')->name('project');
-    Route::get('/post','PostController@post')->name('post');
-    Route::get('posts/showpost','PostController@showpost')->name('showpost');
-    Route::get('/contact','ContactController@contactForm')->name('contact');
-    Route::post('/contact','ContactController@storeContactForm')->name('contact.store');
+
+ 
 
     Route::get('/projectfilter','Projectcontroller@filter')->name('filter');
     Route::get('projects/allproject', 'Projectcontroller@allproject')->name('allproject');
@@ -52,6 +49,7 @@ Route::middleware(['admin.auth'])->group(function () {
     Route::get('/blogcategory', 'Postcontroller@blogcategory')->name('blogcategory');
     Route::get('/blogtag', 'Postcontroller@blogtag')->name('blogtag');
     Route::get('posts/allpost', 'Postcontroller@allpost')->name('allpost');
+
     Route::resource('posts', 'PostController');
 
     Route::get('testimonials/datatable', 'TestimonialController@datatable')->name('datatable');
