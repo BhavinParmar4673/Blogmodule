@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Mail;
 use App\mail\contactmail;
-
-
+use App\Models\NewsLetter;
 
 class ContactController extends Controller
 {
@@ -24,11 +23,33 @@ class ContactController extends Controller
             'email' => 'required|email',
             'message' => 'required',
         ]);
+        $existEmail = Contact::where('email', $request->email)->first();
 
-        $input = $request->all();
-        $contact = Contact::create($input);
+        if (!$existEmail) {
+            $input = $request->all();
+            Contact::create($input);
+            return redirect()->back()->with('success', 'Contact Details Send Successfully');
+        }
+        return redirect()->back()->with('error', 'Contact Details Already Filled');
 
-        Mail::to($contact->email)->send(new contactmail($contact));
-        return redirect()->back()->with(['success' => 'Contact Form Submit Successfully']);
+        // Mail::to($contact->email)->send(new contactmail($contact));
+
+    }
+    public function storeNewsletter(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+        $existEmail = NewsLetter::where('email', $request->email)->first();
+
+        if (!$existEmail) {
+            $input = $request->all();
+            NewsLetter::create($input);
+            return redirect()->back()->with('success', 'Email Subscribe Successfully');
+        }
+        return redirect()->back()->with('error', 'Email Already Subscribed');
+
+        // Mail::to($contact->email)->send(new contactmail($contact));
+
     }
 }

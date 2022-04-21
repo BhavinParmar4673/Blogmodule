@@ -12,7 +12,8 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active"><a href="{{ route('admin.category.index') }}">Category</a></li>
+                            <li class="breadcrumb-item active"><a href="{{ route('admin.category.index') }}">Category</a>
+                            </li>
                         </ol>
                     </div>
                 </div>
@@ -20,11 +21,12 @@
         </section>
         <section class="content">
             <div class="container-fluid">
-            <!-- Default box -->
+                <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Category Datatable</h3>
-                        <a href="javascript:void(0)" class="btn btn-primary float-right" id="createcategory">Create Category</a>
+                        <a href="javascript:void(0)" class="btn btn-primary float-right" id="createcategory">Create
+                            Category</a>
                         <a href="javascript:void(0)" id="index" data-url="{{ route('admin.allcategory') }}"></a>
                     </div>
                     <div class="card-body">
@@ -60,13 +62,14 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title" id="modelHeading">Create New Category</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     {{-- form --}}
-                                    <form action="{{ route('admin.category.store') }}" method="POST" enctype="multipart/form-data"
-                                        name="form" id="form-data">
+                                    <form action="{{ route('admin.category.store') }}" method="POST"
+                                        enctype="multipart/form-data" name="form" id="form-data">
                                         <div class="modal-body">
                                             <span class="text-danger" id="error"></span>
                                             <div class="form-group">
@@ -82,18 +85,18 @@
                                             <div class="mydiv d-flex">
                                                 <div class="form-group">
                                                     <label for="exampleFormControlFile1">Category Image</label>
-                                                    <input type="file" name="file" id="image" accept="image/*" class="form-control-file required"
-                                                        id="image-edit">
+                                                    <input type="file" name="file" id="image" accept="image/*"
+                                                        class="form-control-file required" id="image-edit">
                                                 </div>
-                                                <img
-                                                src="https://www.riobeauty.co.uk/images/product_image_not_found.gif"
-                                                alt="preview image" style="width:120px;">
+                                                <img src="https://via.placeholder.com/120x80.png" alt="preview image"
+                                                    style="width:120px;">
                                             </div>
                                         </div>
                                         @csrf
                                         <div class="modal-footer justify-content-between">
                                             <button type="submit" class="btn btn-primary" id="saveBtn">Add category</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">Close</button>
                                         </div>
                                     </form>
                                     {{-- /form --}}
@@ -109,7 +112,8 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title" id="modelHeading">Edit Category</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
 
@@ -132,16 +136,17 @@
                                             </div>
                                             <div class="d-flex">
                                                 <div class="form-group">
-                                                <label for="exampleFormControlFile1">Category Image</label>
-                                                <input type="file" name="file"  accept="image/*" class="form-control-file required"
-                                                    id="image-edit">
+                                                    <label for="exampleFormControlFile1">Category Image</label>
+                                                    <input type="file" name="file" accept="image/*"
+                                                        class="form-control-file required" id="image-edit">
                                                 </div>
                                             </div>
                                         </div>
                                         @csrf
                                         <div class="modal-footer justify-content-between">
                                             <button type="submit" class="btn btn-primary">Update Category</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">Close</button>
                                         </div>
                                     </form>
                                     {{-- /form --}}
@@ -153,7 +158,7 @@
                         <!-- /.modal -->
                     </div>
                 </div>
-            <!-- /.card -->
+                <!-- /.card -->
             </div>
         </section>
     </div>

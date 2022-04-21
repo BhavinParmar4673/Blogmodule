@@ -289,7 +289,8 @@
                                     <h5 class="card-title">{{ $blog->title }}</h5>
                                 </a>
                                 <p class="card-text">{{ $blog->description }}</p>
-                                <a href="" class="blog_link_design">LEARN MORE</a>
+                                <a href="{{ route('post.show', ['slug' => $blog->slug]) }}" class="blog_link_design">LEARN
+                                    MORE</a>
                             </div>
                         </div>
                     </div>

@@ -91,13 +91,14 @@
                             <aside>
                                 <div class="card-body">
                                     <h4 class="widget-title mb-4">Newsletter</h4>
-                                    <form action="" name="form">
+                                    <form action="{{ route('newsletter.store') }}" name="form" method="POST">
+                                        @csrf
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control" placeholder="Enter email"
-                                                aria-label="Recipient's username">
+                                                aria-label="Recipient's username" required name="email">
                                         </div>
                                         <div class="work_button">
-                                            <a href="#" class="primary_btn btn-block">SUBSCRIBE</a>
+                                            <button type="submit" class="primary_btn btn-block">SUBSCRIBE</a>
                                         </div>
                                     </form>
                                 </div>

@@ -24,6 +24,7 @@ Route::get('post', 'PostController@post')->name('post');
 Route::get('post/{slug}', 'PostController@show')->name('post.show');
 Route::get('/contact', 'ContactController@contactForm')->name('contact');
 Route::post('/contact', 'ContactController@storeContactForm')->name('contact.store');
+Route::post('/newsletter', 'ContactController@storeNewsletter')->name('newsletter.store');
 
 Auth::routes();
 

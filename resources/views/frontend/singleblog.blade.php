@@ -70,10 +70,10 @@
                                             <div class="col-md-12 pt-2">
                                                 <div class="post_details">
                                                     <div class="post_image d-flex">
-                                                        <img class="img-fluid" src="{{ $blogpost->image_src }}"
+                                                        <img class="img-responsive" src="{{ $blogpost->image_src }}"
                                                             alt="no-image">
                                                         <div class="post_description p-3">
-                                                            <a href="{{ route('admin.posts.show', $blogpost->slug) }}">
+                                                            <a href="{{ route('post.show', $blogpost->slug) }}">
                                                                 <h3 class="card-title">{{ $blogpost->title }}</h3>
                                                             </a>
                                                             <p class="card-text text-muted h6">
@@ -86,23 +86,6 @@
                                     @endforeach
                                 </div>
 
-                            </aside>
-                        </div>
-
-                        <div class="newsletter">
-                            <aside>
-                                <div class="card-body">
-                                    <h4 class="widget-title mb-4">Newsletter</h4>
-                                    <form action="" name="form">
-                                        <div class="input-group mb-3">
-                                            <input type="text" class="form-control" placeholder="Enter email"
-                                                aria-label="Recipient's username">
-                                        </div>
-                                        <div class="work_button">
-                                            <a href="#" class="primary_btn btn-block">SUBSCRIBE</a>
-                                        </div>
-                                    </form>
-                                </div>
                             </aside>
                         </div>
                     </div>

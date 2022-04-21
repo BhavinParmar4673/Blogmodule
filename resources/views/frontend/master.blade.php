@@ -41,12 +41,25 @@
     <script src="{{ mix('js/popper.js') }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/frontend.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        @if (Session::has('success'))
+            toastr.success('{!! session('success') !!}')
+            @php
+                session()->forget('success');
+            @endphp
+        @endif
+        @if (Session::has('error'))
+            toastr.error('{!! session('error') !!}')
+            @php
+                session()->forget('error');
+            @endphp
+        @endif
     </script>
     @stack('script')
 </body>

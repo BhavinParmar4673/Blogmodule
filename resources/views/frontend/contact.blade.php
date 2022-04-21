@@ -14,14 +14,14 @@
                             <div class="contact-title text-center my-4 pb-2">
                                 <h3 class="text-uppercase">Contact <strong>US</strong></h3>
                             </div>
-                            @if (Session::has('success'))
+                            {{-- @if (Session::has('success'))
                                 <div class="alert alert-success">
                                     {{ Session::get('success') }}
                                     @php
                                         Session::forget('success');
                                     @endphp
                                 </div>
-                            @endif
+                            @endif --}}
                             <form id="contact-form" action="{{ route('contact.store') }}" method="POST">
                                 @csrf
                                 <div class="contactform-design">

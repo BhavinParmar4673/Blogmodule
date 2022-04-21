@@ -13,8 +13,8 @@
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('admin.posts.create') }}">Create</a></li>
-                            <a href="javascript:void(0)" id="category" data-url="{{route('admin.blogcategory')}}"></a>
-                            <a href="javascript:void(0)" id="tag" data-url="{{route('admin.blogtag')}}"></a>
+                            <a href="javascript:void(0)" id="category" data-url="{{ route('admin.blogcategory') }}"></a>
+                            <a href="javascript:void(0)" id="tag" data-url="{{ route('admin.blogtag') }}"></a>
                         </ol>
                     </div>
                 </div>
@@ -23,26 +23,27 @@
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
-                <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data" id="post-from">
+                <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data"
+                    id="post-from">
                     @csrf
                     <div class="row">
                         <!-- /.col -->
                         <div class="col-md-9">
                             @if (session('message'))
-                                    <div class="alert alert-success message">
-                                        {{ session('message') }}
-                                    </div>
-                                @endif
+                                <div class="alert alert-success message">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
 
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="card">
                                 <div class="card-header">
                                     <h4>Post</h4>
@@ -52,7 +53,7 @@
                                     </ul> --}}
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
-                                    
+
                                     <div class="tab-content">
                                         <div class="active tab-pane" id="activity">
                                             <div class="form-group">
@@ -61,7 +62,8 @@
                                                     placeholder="Enter Title" value="{{ old('title') }}">
                                             </div>
                                             <div class="form-group">
-                                                <a href="javascript:void(0)" id="slugurl" data-url="{{route('admin.checkslug')}}"></a>
+                                                <a href="javascript:void(0)" id="slugurl"
+                                                    data-url="{{ route('admin.checkslug') }}"></a>
                                                 <label for="slug">Slug <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="slug" id="slug"
                                                     value="{{ old('slug') }}">
@@ -69,15 +71,14 @@
                                             <div class="form-group">
                                                 <label for="description">Description <span
                                                         class="text-danger">*</span></label>
-                                                <textarea class="form-control" placeholder="Short Description"
-                                                    name="description" id="description"
+                                                <textarea class="form-control" placeholder="Short Description" name="description" id="description"
                                                     rows="4">{{ old('description') }}</textarea>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="Content">Content</label>
-                                                <textarea class="ckeditor form-control" placeholder="Enter Content"
-                                                    name="content" id="content" rows="4">{{ old('content') }}</textarea>
+                                                <textarea class="ckeditor form-control" placeholder="Enter Content" name="content" id="content"
+                                                    rows="4">{{ old('content') }}</textarea>
                                             </div>
                                         </div>
                                         <!-- /.tab-pane -->
@@ -113,7 +114,8 @@
 
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title text-primary mb-0">Status <span class="text-danger">*</span></h3>
+                                    <h3 class="card-title text-primary mb-0">Status <span class="text-danger">*</span>
+                                    </h3>
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
@@ -130,7 +132,8 @@
 
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title text-primary mb-0">Categories <span class="text-danger">*</span>
+                                    <h3 class="card-title text-primary mb-0">Categories <span
+                                            class="text-danger">*</span>
                                     </h3>
                                     <!-- /.card-tools -->
                                 </div>
@@ -138,26 +141,29 @@
                                 <div class="card-body">
                                     <div class="form-group select2-primary">
                                         <select class="multiple-category" name="categorys[]" id="multiplecategory"
-                                        data-placeholder="Write some category"  data-dropdown-css-class="select2-primary" multiple="multiple">
+                                            data-placeholder="Write some category" data-dropdown-css-class="select2-primary"
+                                            multiple="multiple">
                                         </select>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
                             </div>
-                            
+
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title text-primary mb-0">Image <span class="text-danger">*</span></h3>
+                                    <h3 class="card-title text-primary mb-0">Image <span class="text-danger">*</span>
+                                    </h3>
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="d-flex flex-column">
                                         <div class="form-group">
-                                            <input type="file" name="file" id="image" class="required" accept="image/*">
+                                            <input type="file" name="file" id="image" class="required"
+                                                accept="image/*">
                                         </div>
-                                            <img src="https://www.riobeauty.co.uk/images/product_image_not_found.gif"
-                                            alt="preview image" style="width:120px;">
+                                        <img src="https://via.placeholder.com/120x80.png" alt="preview image"
+                                            style="width:120px;">
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
@@ -171,7 +177,8 @@
                                 <div class="card-body">
                                     <div class="select2-purple form-group">
                                         <select class="multiple-tag" name="tags[]" id="multipleselect"
-                                        data-placeholder="Write some tags" data-dropdown-css-class="select2-purple" multiple="multiple">
+                                            data-placeholder="Write some tags" data-dropdown-css-class="select2-purple"
+                                            multiple="multiple">
                                         </select>
                                     </div>
                                 </div>
