@@ -30,32 +30,56 @@ Route::post('password/confirm', 'Auth\ConfirmPasswordController@confirm');
 // Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 
 Route::middleware(['admin.auth'])->group(function () {
-    Route::get('category/allcategory', 'Categorycontroller@allcategory')->name('allcategory');
-    Route::resource('category', 'Categorycontroller');
+    Route::get('category/exists', 'CategoryController@exists')->name('category.exist');
+    Route::post('category/{id}/status', 'CategoryController@changeStatus')->name('category.status');
+    Route::post('category/data-list', 'CategoryController@allCategory')->name('allcategory');
+    Route::resource('category', 'CategoryController');
 
-    Route::get('tag/alltag', 'Tagcontroller@alltag')->name('alltag');
-    Route::resource('tag', 'Tagcontroller');
+    Route::post('tag/allTag', 'TagController@alltag')->name('alltag');
+    Route::get('tag-exist', 'TagController@exist')->name('tag.exist');
+    Route::resource('tag', 'TagController');
 
     //home page using
-
- 
-
-    Route::get('/projectfilter','Projectcontroller@filter')->name('filter');
-    Route::get('projects/allproject', 'Projectcontroller@allproject')->name('allproject');
-    Route::resource('projects', 'Projectcontroller');
+    Route::get('projects/exists', 'ProjectController@exists')->name('projects.exists');
+    Route::post('ckeditor/image_upload', 'ProjectController@upload')->name('upload');
+    Route::post('projects/data-list', 'ProjectController@allProject')->name('allproject');
+    Route::resource('projects', 'ProjectController');
 
 
-    Route::get('posts/check_slug','PostController@checkslug')->name('checkslug');
-    Route::get('/blogcategory', 'Postcontroller@blogcategory')->name('blogcategory');
-    Route::get('/blogtag', 'Postcontroller@blogtag')->name('blogtag');
-    Route::get('posts/allpost', 'Postcontroller@allpost')->name('allpost');
+    Route::get('posts/check_slug', 'PostController@checkslug')->name('checkslug');
+    Route::get('/blogcategory', 'PostController@blogcategory')->name('blogcategory');
+    Route::get('/blogtag', 'PostController@blogtag')->name('blogtag');
+    Route::post('posts/allPost', 'PostController@allPost')->name('allpost');
 
     Route::resource('posts', 'PostController');
 
-    Route::get('testimonials/datatable', 'TestimonialController@datatable')->name('datatable');
+    Route::get('service/exists', 'ServiceController@exists')->name('service.exists');
+    Route::post('service/{id}/status', 'ServiceController@changeStatus')->name('service.status');
+    Route::post('service/data-list', 'ServiceController@dataListing')->name('service.list');
+    Route::resource('service', 'ServiceController');
+
+    Route::get('employee/exists', 'EmployeeController@exists')->name('employee.exists');
+    Route::post('employee/{id}/status', 'EmployeeController@changeStatus')->name('employee.status');
+    Route::post('employee/data-list', 'EmployeeController@dataListing')->name('employee.list');
+    Route::resource('employee', 'EmployeeController');
+
+    Route::post('about-us/data-list', 'AboutUsController@dataListing')->name('about-us.list');
+    Route::resource('about-us', 'AboutUsController');
+
+    Route::post('contact/data-list', 'ContactController@dataListing')->name('contact.list');
+    Route::resource('contact', 'ContactController');
+
+    Route::post('testimonials/{id}/status', 'TestimonialController@changeStatus')->name('testimonials.status');
+    Route::get('testimonials/exists', 'TestimonialController@exists')->name('testimonials.exists');
+    Route::post('testimonials/data-list', 'TestimonialController@dataListing')->name('testimonials.list');
     Route::resource('testimonials', 'TestimonialController');
 
-    Route::get('sliders/allslider', 'SliderController@allslider')->name('allslider');
+    Route::post('sliders/dataListing', 'SliderController@dataListing')->name('sliders.list');
     Route::resource('sliders', 'SliderController');
 
+    Route::group(['middleware' => []], function () {
+        Route::get('website-setting', 'Settings\SettingController@showSettingPage')->name('website-setting');
+        Route::resource('settings', 'Settings\SettingController');
+        Route::resource('smtp', 'Settings\SmtpSettingController');
+    });
 });

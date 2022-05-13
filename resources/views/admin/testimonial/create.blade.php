@@ -55,7 +55,8 @@
                                             <div class="form-group">
                                                 <label for="Title">Title <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="title" id="title"
-                                                    value="{{ old('title') }}">
+                                                    data-rule-remote="{{ route('admin.testimonials.exists') }}"
+                                                    data-msg-remote="Title already in use" value="{{ old('title') }}">
                                             </div>
                                             <a href="javascript:void(0)" id="checkslug"
                                                 data-url="{{ route('admin.checkslug') }}"></a>
@@ -63,7 +64,7 @@
 
                                             <div class="form-group">
                                                 <label for="Content">Content</label>
-                                                <textarea class="ckeditor form-control" placeholder="Enter Content" name="content" id="content"
+                                                <textarea class="form-control" placeholder="Enter Content" name="content" id="content"
                                                     rows="4">{{ old('content') }}</textarea>
                                             </div>
                                         </div>
@@ -124,7 +125,7 @@
                                 </div>
                             </div>
 
-                            <div class="card">
+                            {{-- <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title text-primary mb-0">Visibility <span
                                             class="text-danger">*</span></h3>
@@ -138,7 +139,7 @@
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="card">
                                 <div class="card-header">
@@ -173,6 +174,12 @@
     <!-- /.content-wrapper -->
 
     @push('script')
+        <script type="text/javascript">
+            CKEDITOR.replace('content', {
+                filebrowserUploadUrl: "{{ route('admin.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: 'form'
+            });
+        </script>
         <script src="{{ asset('js/testimonial.js') }}"></script>
     @endpush
 

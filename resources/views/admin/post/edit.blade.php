@@ -13,8 +13,8 @@
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('admin.posts.edit', $post->id) }}">Edit</a></li>
-                            <a href="javascript:void(0)" id="category" data-url="{{route('admin.blogcategory')}}"></a>
-                            <a href="javascript:void(0)" id="tag" data-url="{{route('admin.blogtag')}}"></a>
+                            <a href="javascript:void(0)" id="category" data-url="{{ route('admin.blogcategory') }}"></a>
+                            <a href="javascript:void(0)" id="tag" data-url="{{ route('admin.blogtag') }}"></a>
                         </ol>
                     </div>
                 </div>
@@ -31,20 +31,20 @@
                         <!-- /.col -->
                         <div class="col-md-9">
                             @if (session('message'))
-                                    <div class="alert alert-success message">
-                                        {{ session('message') }}
-                                    </div>
-                                @endif
+                                <div class="alert alert-success message">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
 
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="card">
                                 <div class="card-header">
                                     <h4>Post</h4>
@@ -61,25 +61,24 @@
                                                 <input type="text" class="form-control" id="title" name="title"
                                                     value="{{ $post->title }}">
                                             </div>
-                                            
+
                                             <div class="form-group">
-                                                <a href="javascript:void(0)" id="slugurl" data-url="{{route('admin.checkslug')}}"></a>
+                                                <a href="javascript:void(0)" id="slugurl"
+                                                    data-url="{{ route('admin.checkslug') }}"></a>
                                                 <label for="slug">Slug <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="slug" id="slug"
-                                                value="{{ $post->slug }}">
+                                                    value="{{ $post->slug }}">
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="description">Description <span
                                                         class="text-danger">*</span></label>
-                                                <textarea class="form-control" name="description" id="description"
-                                                    rows="4">{{ $post->description }}</textarea>
+                                                <textarea class="form-control" name="description" id="description" rows="4">{{ $post->description }}</textarea>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="Content">Content</label>
-                                                <textarea class="ckeditor form-control" name="content" id="Content"
-                                                    rows="4">{{ $post->content }}</textarea>
+                                                <textarea class="form-control" name="content" id="Content" rows="4">{{ $post->content }}</textarea>
                                             </div>
                                         </div>
                                         <!-- /.tab-pane -->
@@ -115,24 +114,28 @@
 
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title text-primary mb-0">Status <span class="text-danger">*</span></h3>
+                                    <h3 class="card-title text-primary mb-0">Status <span class="text-danger">*</span>
+                                    </h3>
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                        <div class="form-group">
-                                            <select class="form-control status" name="status" style="width: 100%;">
-                                                <option value="1" {{$post->status == 'Published' ? 'selected' : ''}}>Published</option>
-                                                <option value="0" {{$post->status == 'Pending' ? 'selected' : ''}}>Pending</option>
-                                            </select>
-                                        </div>
+                                    <div class="form-group">
+                                        <select class="form-control status" name="status" style="width: 100%;">
+                                            <option value="1" {{ $post->status == 'Published' ? 'selected' : '' }}>
+                                                Published</option>
+                                            <option value="0" {{ $post->status == 'Pending' ? 'selected' : '' }}>Pending
+                                            </option>
+                                        </select>
+                                    </div>
                                     <!-- /.card-body -->
                                 </div>
                             </div>
 
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title text-primary mb-0">Categories <span class="text-danger">*</span>
+                                    <h3 class="card-title text-primary mb-0">Categories <span
+                                            class="text-danger">*</span>
                                     </h3>
                                     <!-- /.card-tools -->
                                 </div>
@@ -140,10 +143,12 @@
                                 <div class="card-body">
                                     <div class="form-group select2-primary">
                                         <select class="multiple-category" name="categorys[]" id="multiplecategory"
-                                        data-placeholder="Write some category"  data-dropdown-css-class="select2-primary" multiple="multiple">
-                                        @foreach ($post->categorys as $category)
-                                            <option value={{ $category->id }} selected>{{ $category->name }}</option>
-                                        @endforeach
+                                            data-placeholder="Write some category" data-dropdown-css-class="select2-primary"
+                                            multiple="multiple">
+                                            @foreach ($post->categorys as $category)
+                                                <option value={{ $category->id }} selected>{{ $category->name }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <!-- /.card-body -->
@@ -151,14 +156,16 @@
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title text-primary mb-0">Image <span class="text-danger">*</span></h3>
+                                    <h3 class="card-title text-primary mb-0">Image <span class="text-danger">*</span>
+                                    </h3>
                                     <!-- /.card-tools -->
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="d-flex flex-column">
                                         <div class="form-group">
-                                            <input type="file" name="file" id="image" class="required" accept="image/*">
+                                            <input type="file" name="file" id="image" class="required"
+                                                accept="image/*">
                                         </div>
                                         <div>
                                             <img src="{{ $post->image_src }}" alt="preview image" style="width:120px;">
@@ -176,7 +183,7 @@
                                 <div class="card-body">
                                     <div class="select2-purple form-group">
                                         <select class="multiple-tag" name="tags[]" id="multipleselect" multiple="multiple"
-                                        data-placeholder="Write some tags" data-dropdown-css-class="select2-purple">
+                                            data-placeholder="Write some tags" data-dropdown-css-class="select2-purple">
                                             @foreach ($post->tags as $tag)
                                                 <option value={{ $tag->id }} selected>{{ $tag->name }}</option>
                                             @endforeach
@@ -196,6 +203,12 @@
 
 
     @push('script')
+        <script type="text/javascript">
+            CKEDITOR.replace('content', {
+                filebrowserUploadUrl: "{{ route('admin.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: 'form'
+            });
+        </script>
         <script src="{{ asset('js/post.js') }}"></script>
     @endpush
 @endsection

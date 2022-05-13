@@ -58,7 +58,7 @@ class PostController extends Controller
             $path = Post::uploadimage($request->file('file'));
         }
 
-        $post =Post::create([
+        $post = Post::create([
             'title' => $request->title,
             'slug' => $slug,
             'description' => $request->description,
@@ -71,81 +71,78 @@ class PostController extends Controller
         $post->categorys()->sync($request->categorys);
 
         if ($request->get('submit') == 'save') {
-            return redirect()->route('admin.posts.index')->with('message', 'Blog Created Successfully');
+            return redirect()->route('admin.posts.index')->with('success', 'Blog Created Successfully');
         } elseif ($request->get('submit') == 'apply') {
-            return redirect()->route('admin.posts.edit',$post->id)->with('message', 'Blog Created Successfully');
+            return redirect()->route('admin.posts.edit', $post->id)->with('success', 'Blog Created Successfully');
         }
     }
 
-    public function allpost(Request $request)
+    public function allPost(Request $request)
     {
-        $draw = $request->input('draw');
+
+        // Listing columns to show
+        $columns = array(
+            0 => 'id',
+            1 => 'title',
+            2 => 'category',
+            3 => 'author',
+            4 => 'created_at',
+            5 => 'status',
+            6 => 'image',
+            7 => 'action',
+        );
+
+        $totalData = Post::count(); // table count
+
+        $limit = $request->input('length');
         $start = $request->input('start');
-        $rowperpage = $request->input('length'); // Rows display per page
-        $columnIndex = $request->input('order')[0]['column']; // Column index
-        $columnName = $request->input('columns')[$columnIndex]['data']; // Column name
-        $columnSortOrder = $request->input('order')[0]['dir']; // asc or desc
-        $searchValue = $request->input('search')['value']; // Search value
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        $search = $request->input('search.value');
 
-            // Total records
-            $totalRecords = Post::select('count(*) as allcount')
-                ->when($searchValue != '', function ($query) use ($searchValue) {
-                    return $query->where('id', 'like', '%' . $searchValue . '%')
-                        ->orwhere('title', 'like', '%' . $searchValue . '%')
-                        ->orwhere('created_at', 'like', '%' . $searchValue . '%');
-                })->count();
+        $contactCollection = Post::when($search, function ($query, $search) {
+            return $query->where('title', 'LIKE', "%{$search}%")->orWhere('created_at', 'LIKE', "%{$search}%");
+        });
 
-            // Fetch records
-            $records = Post::orderBy($columnName, $columnSortOrder)
-                ->when($searchValue != '', function ($query) use ($searchValue) {
-                    return $query->where('id', 'like', '%' . $searchValue . '%')
-                    ->orwhere('title', 'like', '%' . $searchValue . '%')
-                    ->orwhere('created_at', 'like', '%' . $searchValue . '%');
-                })
-                ->select('posts.*')
-                ->skip($start)
-                ->take($rowperpage)
-                ->get();
+        // dd($totalData);
 
-            foreach ($records as $record) {
-                $id = $record->id;
-                $title =  $record->title;
-                $post = Post::findOrFail($id);
-                $categorylist = "";
-                foreach ($post->categorys as $category) {
-                    $categorylist .=  '<span class="badge badge-info mr-1">' . $category->name . '</span>';
-                }
-                $author =Auth::guard('admin')->user()->name;
-                $created_at = $record->created_at->toDateString();
-                $status = '<span class="badge badge-success">'.$record->status.'</span>';
-                $image = '<img height="80" src="' . $record->image_src . '" alt="Image"/>';
-                $operation = '<a href="' . route('admin.posts.edit', $record->id) . '"  class="edit btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i>
-                      </a>
-                      <a href="javascript:void(0);" data-url="' . route('admin.posts.destroy', $record->id) . '"
-                        data-id=' . $record->id . '  class="delete btn btn-danger btn-sm">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                      </a>';
+        $totalFiltered = $contactCollection->count();
 
-                $data_arr[] = array(
-                    "id" => $id,
-                    "title" => $title,
-                    "category" => $categorylist,
-                    "author" => $author,
-                    "created_at"=>$created_at,
-                    "status" =>$status,
-                    "image" => $image,
-                    "operations" => $operation,
-                );
+        $contactCollection = $contactCollection->offset($start)->limit($limit)->orderBy($order, $dir)->get();
+
+        $data = [];
+
+        foreach ($contactCollection as $key => $item) {
+            $post = Post::findOrFail($item->id);
+            $list = "";
+            foreach ($post->categorys as $category) {
+                $list .=  '<span class="badge badge-info mr-1">' . $category->name . '</span>';
             }
+            $row['id'] = $item->id;
+            $row['title'] = $item->title;
+            $row['category'] = $list;
+            $row['author'] = Auth::guard('admin')->user()->name;
+            $row['created_at'] = $item->created_at->toDateString();
+            $row['status'] =  '<span class="badge badge-success">' . $item->status . '</span>';
+            $row['image'] =  '<img height="80" src="' . $item->image_src . '" alt="Image"/>';
+            $row['action'] =  '<a href="' . route('admin.posts.edit', $item->id) . '"  class="edit btn btn-primary btn-sm">
+            <i class="fas fa-edit"></i>
+            </a>
+            <a href="javascript:void(0);" data-url="' . route('admin.posts.destroy', $item->id) . '"
+                data-id=' . $item->id . '  class="delete btn btn-danger btn-sm">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>';
 
-            $response = array(
-                "draw" => intval($draw),
-                "iTotalRecords" => $totalRecords,
-                "iTotalDisplayRecords" => $totalRecords,
-                "aaData" => $data_arr
-            );
-            return response()->json($response, 200);
+            $data[] = $row;
+        }
+        $json_data = array(
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data,
+        );
+
+        return response()->json($json_data);
     }
 
 
@@ -158,7 +155,6 @@ class PostController extends Controller
      */
     public function show()
     {
-      
     }
 
     /**
@@ -194,18 +190,18 @@ class PostController extends Controller
             $post->image = $path;
         }
         $post->update([
-                'title' => $request->title,
-                'slug' => $slug,
-                'description' => $request->description,
-                'content' => $request->content,
-                'status' => $request->status
-             ]);
+            'title' => $request->title,
+            'slug' => $slug,
+            'description' => $request->description,
+            'content' => $request->content,
+            'status' => $request->status
+        ]);
         $post->tags()->sync($request->tags);
         $post->categorys()->sync($request->categorys);
         if ($request->get('submit') == 'save') {
-            return redirect()->route('admin.posts.index')->with('message', 'Blog Updated Successfully');
+            return redirect()->route('admin.posts.index')->with('success', 'Blog Updated Successfully');
         } elseif ($request->get('submit') == 'apply') {
-            return redirect()->route('admin.posts.edit',$post->id)->with('message', 'Blog Updated Successfully');
+            return redirect()->route('admin.posts.edit', $post->id)->with('success', 'Blog Updated Successfully');
         }
     }
 
@@ -223,37 +219,34 @@ class PostController extends Controller
     }
 
     //common function of remotedata in mutiselect using ajax
-    public function remoteajax($model,$search){
+    public function remoteajax($model, $search)
+    {
         $record = $model::orderby('name', 'asc')
-             ->select('id', 'name as text')
-             ->where('name', 'like', '%' . $search . '%')
-             ->get();
-         return $record;
-     }
+            ->select('id', 'name as text')
+            ->where('name', 'like', '%' . $search . '%')
+            ->get();
+        return $record;
+    }
 
     public function blogtag(Request $request)
     {
         $search = $request->search;
-        $tags = $this->remoteajax(Tag::class,$search);
+        $tags = $this->remoteajax(Tag::class, $search);
         return response()->json($tags);
     }
 
     public function blogcategory(Request $request)
     {
         $search = $request->search;
-        $categorys =  $this->remoteajax(Category::class,$search);
+        $categorys =  $this->remoteajax(Category::class, $search);
         return response()->json($categorys);
     }
 
-    public function checkslug(Request $request){
+    public function checkslug(Request $request)
+    {
         $slug = Str::slug($request->title, '-');
         return response()->json([
-            'slug'=>$slug
+            'slug' => $slug
         ]);
     }
-
-
-
-
-
 }

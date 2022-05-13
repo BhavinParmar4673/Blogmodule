@@ -12,7 +12,7 @@
                     <li class="list" data-filter="{{ $tag->name }}" data-id="{{ $tag->id }}">
                         {{ $tag->name }}</li>
                 @endforeach
-                <a href="javascript:void(0)" id="filter" data-url="{{ route('admin.filter') }}"></a>
+                <a href="javascript:void(0)" id="filter" data-url="{{ route('filter') }}"></a>
             </ul>
             <div class="row mt-5" id="itembox-dynamic-new">
                 @foreach ($projects as $key => $myproject)

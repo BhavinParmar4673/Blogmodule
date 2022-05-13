@@ -37,22 +37,13 @@
                                     <tr>
                                         <th>Cat Id</th>
                                         <th>Category Name</th>
-                                        <th width="50%">Description</th>
+                                        <th>Status</th>
                                         <th>Image</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>Cat Id</th>
-                                        <th>Category Name</th>
-                                        <th>Description</th>
-                                        <th>Image</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                         {{-- table end --}}
@@ -75,6 +66,8 @@
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Category Name</label>
                                                 <input type="text" class="form-control" id="category" name="category"
+                                                    data-rule-remote="{{ route('admin.category.exist') }}"
+                                                    data-msg-remote="Category already exist"
                                                     placeholder="Enter Category Name">
                                             </div>
                                             <div class="form-group">
@@ -126,7 +119,9 @@
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Category Name</label>
                                                 <input type="text" class="form-control" id="category-edit" name="category"
-                                                    placeholder="Enter Category Name">
+                                                    placeholder="Enter Category Name"
+                                                    data-rule-remote="{{ route('admin.category.exist') }}"
+                                                    data-msg-remote="Category already exist">
                                             </div>
                                             <input type="hidden" name="cat_id" id="cat_id">
                                             <div class="form-group">
@@ -138,7 +133,7 @@
                                                 <div class="form-group">
                                                     <label for="exampleFormControlFile1">Category Image</label>
                                                     <input type="file" name="file" accept="image/*"
-                                                        class="form-control-file required" id="image-edit">
+                                                        class="form-control-file" id="image-edit">
                                                 </div>
                                             </div>
                                         </div>

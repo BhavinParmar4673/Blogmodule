@@ -20,7 +20,7 @@ class PostController extends Controller
             'blogs' => $blogs
         ]);
     }
-
+    
     public function show($slug)
     {
         $post = Post::where('slug', $slug)->first();

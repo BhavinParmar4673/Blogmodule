@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Member;
 use App\Http\Controllers\Controller as Controller;
 use App\Models\Testimonial;
-use Facade\FlareClient\Http\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Traits\DatatableTrait;
 
 class TestimonialController extends Controller
 {
+    use DatatableTrait;
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +19,8 @@ class TestimonialController extends Controller
      */
     public function index()
     {
-        return view('admin.testimonial.index');
+        $this->data['title'] = 'Testimonial';
+        return $this->view('admin.testimonial.index');
     }
 
     /**
@@ -40,103 +42,92 @@ class TestimonialController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required',  
+            'title' => 'required',
             'content' => 'required|min:5|max:2000',
             'file' => 'required|mimes:jpg,jpeg,png',
-            'fullname'=>'required',
-            'email' =>'email|required|unique:members,email',
-            'url'=>'required|url',
-            'designation'=>'required',
+            'fullname' => 'required',
+            'email' => 'email|required|unique:members,email',
+            'url' => 'required|url',
+            'designation' => 'required',
         ]);
         $slug = Str::slug($request->title, '-');
         if ($request->hasFile('file')) {
             $path = Testimonial::uploadimage($request->file('file'));
         }
 
-        $testimonial =Testimonial::create([
+        $testimonial = Testimonial::create([
             'title' => $request->title,
             'slug' => $slug,
             'content' => $request->content,
             'image' => $path,
-            'visibility' => $request->visible == 'on'? 1:0,
+            'is_active' => now()->format('Y-m-d H:i:s')
         ]);
-        $member= Member::create([
+        $member = Member::create([
             'fullname' => $request->fullname,
-            'testimonial_id'=>$testimonial->id,
+            'testimonial_id' => $testimonial->id,
             'email' => $request->email,
             'url' => $request->url,
-            'designation'=>$request->designation
+            'designation' => $request->designation
         ]);
-        return redirect()->route('admin.testimonials.index')->with('message', 'Testimonials Created Successfully');
+        return redirect()->route('admin.testimonials.index')->with('success', 'Testimonials Created Successfully');
     }
 
-    public function datatable(Request $request)
+    public function dataListing(Request $request)
     {
-        $draw = $request->input('draw');
+
+        // Listing columns to show
+        $columns = array(
+            0 => 'title',
+            1 => 'created_at',
+            2 => 'status',
+            3 => 'action',
+        );
+
+        $totalData = Testimonial::count(); // table count
+
+        $limit = $request->input('length');
         $start = $request->input('start');
-        $rowperpage = $request->input('length'); // Rows display per page
-        $columnIndex = $request->input('order')[0]['column']; // Column index
-        $columnName = $request->input('columns')[$columnIndex]['data']; // Column name
-        $columnSortOrder = $request->input('order')[0]['dir']; // asc or desc
-        $searchValue = $request->input('search')['value']; // Search value
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        $search = $request->input('search.value');
 
-            // Total records
-            $totalRecords = Testimonial::select('count(*) as allcount')
-                ->when($searchValue != '', function ($query) use ($searchValue) {
-                    return $query->where('id', 'like', '%' . $searchValue . '%')
-                        ->orwhere('title', 'like', '%' . $searchValue . '%')
-                        ->orwhere('created_at', 'like', '%' . $searchValue . '%');
-                })->count();
+        $contactCollection = Testimonial::when($search, function ($query, $search) {
+            return $query->where('title', 'LIKE', "%{$search}%")->orWhere('created_at', 'LIKE', "%{$search}%");
+        });
 
-            // Fetch records
-            $records = Testimonial::orderBy($columnName, $columnSortOrder)
-                ->when($searchValue != '', function ($query) use ($searchValue) {
-                    return $query->where('id', 'like', '%' . $searchValue . '%')
-                    ->orwhere('title', 'like', '%' . $searchValue . '%')
-                    ->orwhere('created_at', 'like', '%' . $searchValue . '%');
-                })
-                ->select('testimonials.*')
-                ->skip($start)
-                ->take($rowperpage)
-                ->get();
+        // dd($totalData);
 
-            foreach ($records as $record) {
-                $id = $record->id;
-                $title =  $record->title;
-                $created_at = $record->created_at->toDateString();
-                if($record->visibility == 1){
-                    $visible = '<span class="badge badge-success">On</span>';
-                }else{
-                    $visible = '<span class="badge badge-success">Off</span>';
-                }
-                $image = '<img height="80" src="' . $record->image_src . '" alt="Image"/>';
-                $operation = '<a href="' . route('admin.testimonials.edit', $record->id) . '"  class="edit btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i>
-                      </a>
-                      <a href="javascript:void(0);" data-url="' . route('admin.testimonials.destroy', $record->id) . '" 
-                        data-id=' . $record->id . '  class="delete btn btn-danger btn-sm">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                      </a>';
+        $totalFiltered = $contactCollection->count();
 
-                $data_arr[] = array(
-                    "id" => $id,
-                    "title" => $title,
-                    "created_at"=>$created_at,
-                    "visible" =>$visible,
-                    "image" => $image,
-                    "operations" => $operation,
-                );
-            }
+        $contactCollection = $contactCollection->offset($start)->limit($limit)->orderBy($order, $dir)->get();
 
-            $response = array(
-                "draw" => intval($draw),
-                "iTotalRecords" => $totalRecords,
-                "iTotalDisplayRecords" => $totalRecords,
-                "aaData" => $data_arr
-            );
-            return response()->json($response, 200);
+        $data = [];
+
+        foreach ($contactCollection as $key => $item) {
+            $row['id'] = $item->id;
+            $row['title'] = $item->title;
+            $row['created_at'] = $item->created_at->toDateString();
+            $row['status'] = $this->status($item->is_active, $item->id, route('admin.testimonials.status', ['id' => $item->id]));
+            $row['action'] =  '<a href="' . route('admin.testimonials.edit', $item->id) . '"  class="edit btn btn-primary btn-sm">
+            <i class="fas fa-edit"></i>
+            </a>
+            <a href="javascript:void(0);" data-url="' . route('admin.testimonials.destroy', $item->id) . '"
+                data-id=' . $item->id . '  class="delete btn btn-danger btn-sm">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>';
+
+            $data[] = $row;
+        }
+        $json_data = array(
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data,
+        );
+
+        return response()->json($json_data);
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -158,7 +149,7 @@ class TestimonialController extends Controller
     public function edit(Testimonial $testimonial)
     {
         return view('admin.testimonial.edit')->with([
-            'testimonial'=>$testimonial
+            'testimonial' => $testimonial
         ]);
     }
 
@@ -172,13 +163,13 @@ class TestimonialController extends Controller
     public function update(Request $request, Testimonial $testimonial)
     {
         $this->validate($request, [
-            'title' => 'required',  
-            'fullname'=>'required',
-            'email' =>'email|required',
-            'url'=>'required|url',
-            'designation'=>'required',
+            'title' => 'required',
+            'fullname' => 'required',
+            'email' => 'email|required',
+            'url' => 'required|url',
+            'designation' => 'required',
         ]);
-       
+
         // $memberrecord = Member::where('testimonial_id',$testimonial->id)->first();
         $slug = Str::slug($request->title, '-');
         if ($request->hasFile('file')) {
@@ -187,18 +178,17 @@ class TestimonialController extends Controller
             $testimonial->image = $path;
         }
         $testimonial->update([
-                'title' => $request->title,
-                'slug' => $slug,
-                'content' => $request->content,
-                'visibility' => $request->visible == 'on'? 1:0,
-             ]);
+            'title' => $request->title,
+            'slug' => $slug,
+            'content' => $request->content
+        ]);
         $testimonial->member->update([
             'fullname' => $request->fullname,
             'email' => $request->email,
             'url' => $request->url,
-            'designation'=>$request->designation
+            'designation' => $request->designation
         ]);
-        return redirect()->route('admin.testimonials.index')->with('message', 'Testimonials Updated Successfully');
+        return redirect()->route('admin.testimonials.index')->with('success', 'Testimonials Updated Successfully');
     }
 
     /**
@@ -212,5 +202,36 @@ class TestimonialController extends Controller
         $testimonial->deleteimage(); //delete image in source folder
         $testimonial->delete();
         return response()->json(['success' => 'Testimonials deleted successfully.']);
+    }
+
+    public function exists(Request $request)
+    {
+        $id = $request->get('id');
+        $count = Testimonial::when($id != null, function ($query) use ($request) {
+            return $query->where('id', '!=', $request->id);
+        })->where('title', $request->title)->count();
+        if ($count > 0) {
+            return 'false';
+        } else {
+            return 'true';
+        }
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $testimonial = Testimonial::findOrFail($request->id);
+        $testimonial->is_active  = $request->status == 'true' ? null :  date('Y-m-d H:i:s');
+
+        if ($testimonial->save()) {
+            $statusCode = 200;
+        }
+
+        $status = $request->status == 'true' ? 'active' : 'deactivate';
+        $message = "Testimonial $status successfully.";
+
+        return response()->json([
+            'success' => true,
+            'message' => $message
+        ], $statusCode ?? 400);
     }
 }

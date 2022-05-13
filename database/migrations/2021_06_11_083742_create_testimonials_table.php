@@ -19,8 +19,8 @@ class CreateTestimonialsTable extends Migration
             $table->string('slug', 100)->unique();
             $table->string('content', 2000);
             $table->string('image', 200);
-            $table->boolean('visibility');
-            $table->timestamps();   
+            $table->timestamp('is_active')->nullable();
+            $table->timestamps();
         });
     }
 

@@ -77,7 +77,7 @@
 
                                             <div class="form-group">
                                                 <label for="Content">Content</label>
-                                                <textarea class="ckeditor form-control" placeholder="Enter Content" name="content" id="content"
+                                                <textarea class="form-control" placeholder="Enter Content" name="content" id="content"
                                                     rows="4">{{ old('content') }}</textarea>
                                             </div>
                                         </div>
@@ -195,6 +195,12 @@
 
 
     @push('script')
+        <script type="text/javascript">
+            CKEDITOR.replace('content', {
+                filebrowserUploadUrl: "{{ route('admin.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: 'form'
+            });
+        </script>
         <script src="{{ asset('js/post.js') }}"></script>
     @endpush
 @endsection

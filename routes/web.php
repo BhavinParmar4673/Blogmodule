@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Categorycontroller;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,15 +14,21 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('frontend.index');
-});
-Route::get('project', 'Projectcontroller@display')->name('project');
-Route::get('project/{id}', 'Projectcontroller@singleProject')->name('project.show');
+
+Route::get('/', 'IndexController@index')->name('index.home');
+Route::get('/portfolio/{id}', 'IndexController@singlePortfolio')->name('single');
+Route::post('/contact', 'IndexController@storeContactForm')->name('contact.store');
+
+
+Route::get('/filter', 'IndexController@filter')->name('filter');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Route::get('portfolio', 'ProjectController@display')->name('project');
+// Route::get('portfolio/{id}', 'ProjectController@singleProject')->name('project.show');
+// Route::get('/portfolio-filter', 'ProjectController@filter')->name('filter');
 Route::get('post', 'PostController@post')->name('post');
 Route::get('post/{slug}', 'PostController@show')->name('post.show');
-Route::get('/contact', 'ContactController@contactForm')->name('contact');
-Route::post('/contact', 'ContactController@storeContactForm')->name('contact.store');
+
+// Route::post('/contact', 'ContactController@storeContactForm')->name('contact.store');
 Route::post('/newsletter', 'ContactController@storeNewsletter')->name('newsletter.store');
 
 Auth::routes();

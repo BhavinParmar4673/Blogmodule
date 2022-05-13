@@ -39,11 +39,11 @@ class SliderController extends Controller
         $this->validate($request, [
             'heading' => 'required',
             'description' => 'required',
-            'link'=>'required|url',
-            'linkname'=>'required',
+            'link' => 'required|url',
+            'linkname' => 'required',
             'file' => 'required|mimes:jpg,jpeg,png',
         ]);
-        
+
         $slider = new Slider();
         $slider->heading = $request->heading;
         $slider->description = $request->description;
@@ -53,75 +53,72 @@ class SliderController extends Controller
             $path = $slider->uploadimage($request->file('file'));
         }
         $slider->image = $path;
-        $slider->status = $request->status == 'on'? 1:0;
+        $slider->status = $request->status == 'on' ? 1 : 0;
 
         $slider->save();
-        return redirect()->route('admin.sliders.index')->with('message', 'Slide Created Successfully');
-       
-
+        return redirect()->route('admin.sliders.index')->with('success', 'Slide Created Successfully');
     }
 
-    public function allslider(Request $request)
+    public function dataListing(Request $request)
     {
-        $draw = $request->input('draw');
+        // Listing columns to show
+        $columns = array(
+            0 => 'id',
+            1 => 'heading',
+            2 => 'image',
+            3 => 'status',
+            4 => 'action'
+        );
+
+        $totalData = Slider::count(); // table count
+
+        $limit = $request->input('length');
         $start = $request->input('start');
-        $rowperpage = $request->input('length'); // Rows display per page
-        $columnIndex = $request->input('order')[0]['column']; // Column index
-        $columnName = $request->input('columns')[$columnIndex]['data']; // Column name
-        $columnSortOrder = $request->input('order')[0]['dir']; // asc or desc
-        $searchValue = $request->input('search')['value']; // Search value
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+        $search = $request->input('search.value');
 
-            // Total records
-            $totalRecords = Slider::select('count(*) as allcount')
-                ->when($searchValue != '', function ($query) use ($searchValue) {
-                    return $query->where('id', 'like', '%' . $searchValue . '%')
-                        ->orwhere('heading', 'like', '%' . $searchValue . '%');
-                })->count();
+        $contactCollection = Slider::when($search, function ($query, $search) {
+            return $query->where('heading', 'LIKE', "%{$search}%");
+        });
 
-            // Fetch records
-            $records = Slider::orderBy($columnName, $columnSortOrder)
-                ->when($searchValue != '', function ($query) use ($searchValue) {
-                    return $query->where('id', 'like', '%' . $searchValue . '%')
-                    ->orwhere('heading', 'like', '%' . $searchValue . '%');
-                })
-                ->select('sliders.*')
-                ->skip($start)
-                ->take($rowperpage)
-                ->get();
+        // dd($totalData);
 
-            foreach ($records as $record) {
-                $id = $record->id;
-                $heading =  $record->heading;
-                $image = '<img height="80" src="' . $record->image_src . '" alt="Image"/>';
-                if($record->status == 1){
-                    $status = '<span class="badge badge-success">Visible</span>';
-                }else{
-                    $status = '<span class="badge badge-success">Hidden</span>';
-                }
-                $operation = '<a href="' . route('admin.sliders.edit', $record->id) . '"  class="edit btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i>
-                      </a>
-                      <a href="javascript:void(0);" data-url="' . route('admin.sliders.destroy', $record->id) . '" 
-                        data-id=' . $record->id . '  class="delete btn btn-danger btn-sm">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                      </a>';
+        $totalFiltered = $contactCollection->count();
 
-                $data_arr[] = array(
-                    "id" => $id,
-                    "heading" => $heading,
-                    "image" => $image,
-                    "status" =>$status,
-                    "operations" => $operation,
-                );
+        $contactCollection = $contactCollection->offset($start)->limit($limit)->orderBy($order, $dir)->get();
+
+        $data = [];
+
+        foreach ($contactCollection as $key => $item) {
+            $status = '';
+            if ($item->status == 1) {
+                $status = '<span class="badge badge-success">Visible</span>';
+            } else {
+                $status = '<span class="badge badge-success">Hidden</span>';
             }
+            $row['id'] = $item->id;
+            $row['heading'] = $item->heading;
+            $row['image'] = '<img height="80" src="' . $item->image_src . '" alt="Image"/>';
+            $row['status'] = $status;
+            $row['action'] =  '<a href="' . route('admin.sliders.edit', $item->id) . '"  class="edit btn btn-primary btn-sm">
+            <i class="fas fa-edit"></i>
+            </a>
+            <a href="javascript:void(0);" data-url="' . route('admin.sliders.destroy', $item->id) . '"
+                data-id=' . $item->id . '  class="delete btn btn-danger btn-sm">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>';
 
-            $response = array(
-                "draw" => intval($draw),
-                "iTotalRecords" => $totalRecords,
-                "iTotalDisplayRecords" => $totalRecords,
-                "aaData" => $data_arr
-            );
-            return response()->json($response, 200);
+            $data[] = $row;
+        }
+        $json_data = array(
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data,
+        );
+
+        return response()->json($json_data);
     }
 
     /**
@@ -143,7 +140,7 @@ class SliderController extends Controller
      */
     public function edit(Slider $slider)
     {
-        return view('admin.slider.edit',compact('slider'));
+        return view('admin.slider.edit', compact('slider'));
     }
 
     /**
@@ -158,10 +155,10 @@ class SliderController extends Controller
         $this->validate($request, [
             'heading' => 'required',
             'description' => 'required',
-            'link'=>'required|url',
-            'linkname'=>'required'
+            'link' => 'required|url',
+            'linkname' => 'required'
         ]);
-        
+
         $slider->heading = $request->heading;
         $slider->description = $request->description;
         $slider->link = $request->link;
@@ -171,10 +168,9 @@ class SliderController extends Controller
             $path = $slider->uploadimage($request->file('file'));
             $slider->image = $path;
         }
-        $slider->status = $request->status == 'on'? 1:0;
+        $slider->status = $request->status == 'on' ? 1 : 0;
         $slider->save();
-        return redirect()->route('admin.sliders.index')->with('message', 'Slide Updated Successfully');
-       
+        return redirect()->route('admin.sliders.index')->with('success', 'Slide Updated Successfully');
     }
 
     /**

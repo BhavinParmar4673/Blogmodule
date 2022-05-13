@@ -20,106 +20,120 @@
         </section>
         <section class="content">
             <div class="container-fluid">
-            <!-- Default box -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Tag Datatable</h3>
-                    <a href="javascript:void(0)" class="btn btn-primary float-right" id="createtag">Create Tag</a>
-                    <a href="javascript:void(0)" id="index" data-url="{{route('admin.alltag') }}"></a>
-                </div>
-                <div class="card-body">
-                    {{-- Table --}}
-                    <div class="table-responsive">
-                        <table id="example1" class="table table-bordered table-striped w-100">
-                            <thead>
-                                <tr>
-                                    <th>Tag Id</th>
-                                    <th>Tag Name</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Tag Id</th>
-                                    <th>Tag Name</th>
-                                    <th>Action</th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Tag Datatable</h3>
+                        <a href="javascript:void(0)" class="btn btn-primary float-right" id="createtag">Create Tag</a>
+                        <a href="javascript:void(0)" id="index" data-url="{{ route('admin.alltag') }}"></a>
                     </div>
-                    {{-- table end --}}
-                    {{-- Modal --}}
-                    <div class="modal fade" id="modal-tag">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="modelHeading">Create New Tag</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                {{-- form --}}
-                                <form action="{{ route('admin.tag.store') }}" method="POST" name="form" id="form-data">
-                                    <div class="modal-body">
-                                        <span class="text-danger" id="error"></span>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Tag Name</label>
-                                            <input type="text" class="form-control" name="tag" placeholder="Enter Tag Name">
-                                            <span class="text-danger" id="tag-error"></span>
-                                        </div>
-                                    </div>
-                                    @csrf
-                                    <div class="modal-footer justify-content-between">
-                                        <button type="submit" class="btn btn-primary" id="saveBtn">Add Tag</button>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </form>
-                                {{-- /form --}}
-                            </div>
-                            <!-- /.modal-content -->
+                    <div class="card-body">
+                        {{-- Table --}}
+                        <div class="table-responsive">
+                            <table id="example1" class="table table-bordered table-striped w-100">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Tag Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- /.modal-dialog -->
-                    </div>
-                    <!-- /.modal -->
-                    {{-- Edit Modal --}}
-                    <div class="modal fade" id="modal-tag-edit">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="modelHeading">Edit Tag</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                        {{-- table end --}}
+                        {{-- Modal --}}
+                        <div class="modal fade" id="modal-tag">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="modelHeading">Create New Tag</h4>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    {{-- form --}}
+                                    <form action="{{ route('admin.tag.store') }}" method="POST" name="form"
+                                        id="form-data">
+                                        <div class="modal-body">
+                                            <span class="text-danger" id="error"></span>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Tag Name</label>
+                                                <input type="text" class="form-control exist" name="tag"
+                                                    placeholder="Enter Tag Name"
+                                                    data-rule-remote="{{ route('admin.tag.exist') }}"
+                                                    data-msg-remote="Tag already exist">
+                                                <span class="text-danger" id="tag-error"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Icon</label>
+                                                <input type="text" class="form-control" name="icon" placeholder="fa icon">
+                                                <span class="text-danger" id="tag-error"></span>
+                                            </div>
+                                        </div>
+                                        @csrf
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="submit" class="btn btn-primary" id="saveBtn">Add Tag</button>
+                                            <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                    {{-- /form --}}
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.modal -->
+                        {{-- Edit Modal --}}
+                        <div class="modal fade" id="modal-tag-edit">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="modelHeading">Edit Tag</h4>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
 
-                                </div>
-                                {{-- form --}}
-                                <form action="{{ route('admin.tag.update', 'tag_id') }}" method="POST" name="form"
-                                    id="form-data-edit">
-                                    @method('PUT')
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Tag name</label>
-                                            <input type="text" class="form-control" id="tag-edit" name="tag">
+                                    </div>
+                                    {{-- form --}}
+                                    <form action="{{ route('admin.tag.update', 'tag_id') }}" method="POST" name="form"
+                                        id="form-data-edit">
+                                        @method('PUT')
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Tag name</label>
+                                                <input type="text" class="form-control" required
+                                                    data-rule-remote="{{ route('admin.tag.exist') }}"
+                                                    data-msg-remote="Tag already exist" id="tag-edit" name="tag">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Icon</label>
+                                                <input type="text" class="form-control" name="icon" id="icon"
+                                                    placeholder="fa fa-trash">
+                                                <span class="text-danger" id="tag-error"></span>
+                                            </div>
+                                            <input type="hidden" name="tag_id" id="tag_id">
                                         </div>
-                                        <input type="hidden" name="tag_id" id="tag_id">
-                                    </div>
-                                    @csrf
-                                    <div class="modal-footer justify-content-between">
-                                        <button type="submit" class="btn btn-primary">Update Tag</button>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </form>
-                                {{-- /form --}}
+                                        @csrf
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="submit" class="btn btn-primary">Update Tag</button>
+                                            <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                    {{-- /form --}}
+                                </div>
+                                <!-- /.modal-content -->
                             </div>
-                            <!-- /.modal-content -->
+                            <!-- /.modal-dialog -->
                         </div>
-                        <!-- /.modal-dialog -->
+                        <!-- /.modal -->
                     </div>
-                    <!-- /.modal -->
                 </div>
-            </div>
             </div>
             <!-- /.card -->
 

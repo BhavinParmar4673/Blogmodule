@@ -29,46 +29,43 @@
                                 </a>
                             </div>
                             <div class="work_button">
-                                <a href="#" class="primary_btn">SEE MY WORK</a>
+                                <a href="{{ route('project') }}" class="primary_btn">SEE MY WORK</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <div class="home_right_img">
-                            <img class="img-responsive" src="{{ asset('/Image/banner/Programming-amico.svg') }}"
+                            <img class="img-responsive" src="{{ asset('Image/banner/Programming-amico.svg') }}"
                                 alt="animation Image">
                         </div>
                     </div>
                 </div>
-
+                <div class="visit_customer">
+                    <div class="row align-items-center">
+                        <div class="col-md-3 col-lg-2">
+                            <div class="count py-4">
+                                <h2>15K+</h2>
+                                <p class="lead">Happy Customer</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-2">
+                            <div class="count py-4">
+                                <h2>12K+</h2>
+                                <p class="lead">Ticket Solved</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-2">
+                            <div class="count py-4">
+                                <h2>9/10</h2>
+                                <p class="lead">Average Rating</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    {{-- <div class="visit_customer">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-3 col-lg-2">
-                    <div class="count py-4">
-                        <h2>15K+</h2>
-                        <p class="lead">Happy Customer</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-lg-2">
-                    <div class="count py-4">
-                        <h2>12K+</h2>
-                        <p class="lead">Ticket Solved</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-lg-2">
-                    <div class="count py-4">
-                        <h2>9/10</h2>
-                        <p class="lead">Average Rating</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 
     <div class="container my-5" id="about">
         <div class="main-div row">
@@ -151,11 +148,7 @@
             <div class="row my-5">
                 <div class="col-md-12">
                     <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                        @php
-                            $testimonial = App\Models\Testimonial::where('visibility', 1)
-                                ->latest()
-                                ->get();
-                        @endphp
+
                         <!-- Carousel indicators -->
                         <ol class="carousel-indicators">
                             @foreach ($testimonial as $record)
@@ -191,25 +184,19 @@
         <div class="container">
             <h5 class="text-muted pb-1">OUR PORTFOLIO</h5>
             <h1 class="heading-1 font-weight-bold">Check Our Recent<br> Client Work</h1>
-            @php
-
-                $projects = App\Models\Project::latest()
-                    ->take(8)
-                    ->get();
-            @endphp
             <div class="row py-4">
                 @foreach ($projects as $key => $myproject)
                     @if ($key >= 0 && $key < 2)
                         <div class="col-lg-6 col-12 mb-4">
                             <div class="portfolio-item">
-                                <a class="portfolio-link" href="{{ route('admin.projects.show', $myproject->id) }}">
+                                <a class="portfolio-link" href="{{ route('project.show', $myproject->id) }}">
                                     <div class="thumbnail">
                                         @foreach ($myproject->project_images as $image)
                                             <img class="img-fluid" src="{{ $image->image_src }}" alt="..." />
                                         @endforeach
                                     </div>
                                     <div class="portfolio-hover">
-                                        <h2 class="work__title">{{ $myproject->title }}</h2>
+                                        <h2 class="work__title text-black">{{ $myproject->title }}</h2>
                                         <p class="work__desc">{{ Str::limit($myproject->description, 35) }}</p>
                                     </div>
                                 </a>
@@ -264,11 +251,6 @@
         </div>
     </div>
 
-    @php
-    $blogs = App\Models\Post::latest()
-        ->take(3)
-        ->get();
-    @endphp
     <div class="blog mt-5" id="blog">
         <div class="container">
             <h5 class="text-muted pb-1">OUR BLOG</h5>
@@ -289,7 +271,8 @@
                                     <h5 class="card-title">{{ $blog->title }}</h5>
                                 </a>
                                 <p class="card-text">{{ $blog->description }}</p>
-                                <a href="{{ route('post.show', ['slug' => $blog->slug]) }}" class="blog_link_design">LEARN
+                                <a href="{{ route('post.show', ['slug' => $blog->slug]) }}"
+                                    class="blog_link_design">LEARN
                                     MORE</a>
                             </div>
                         </div>
